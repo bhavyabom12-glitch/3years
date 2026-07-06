@@ -7,7 +7,7 @@ A cozy visual novel mystery game for two. Investigate a disappearance, interroga
 
 ## 🎮 Play the Game
 
-Visit: `https://yourusername.github.io/repo-name/`
+Visit: `https://bhavyabom12.github.io/3years/`
 
 (Replace `yourusername` and `repo-name` with your actual GitHub username and repository name.)
 
