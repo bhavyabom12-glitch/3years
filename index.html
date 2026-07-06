@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>🍊 Santero Island </title>
+    <title>Santero Island</title>
     <style>
-       /* ─── RESET & BASE ─── */
+        /* ─── RESET & BASE ─── */
         * {
             margin: 0;
             padding: 0;
@@ -129,6 +129,15 @@
             text-transform: uppercase;
         }
 
+        #titleScreen .sub-desc {
+            font-size: 14px;
+            color: #8f7a5f;
+            margin-top: 16px;
+            max-width: 400px;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
         #titleScreen .start-btn {
             margin-top: 32px;
             background: #d9a066;
@@ -153,15 +162,6 @@
         #titleScreen .start-btn:hover {
             background: #e8b07a;
             transform: scale(1.02);
-        }
-
-        #titleScreen .sub-desc {
-            font-size: 14px;
-            color: #8f7a5f;
-            margin-top: 16px;
-            max-width: 400px;
-            line-height: 1.6;
-            font-style: italic;
         }
 
         /* ─── CARRD OVERLAY ─── */
@@ -326,7 +326,7 @@
             box-shadow: 0 0px 0 #dbbd9a;
         }
 
-        /* ─── PANELS ─── */
+        /* ─── RESIDENT LIST PANEL ─── */
         .panel {
             display: none;
             background: #fffbf4;
@@ -350,101 +350,6 @@
             margin-bottom: 10px;
             border-bottom: 1px dashed #f0d5b0;
             padding-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .panel h4 .page-nav {
-            display: flex;
-            gap: 6px;
-            font-size: 11px;
-            flex-wrap: wrap;
-        }
-
-        .panel h4 .page-nav button {
-            background: #f0d5b0;
-            border: none;
-            border-radius: 40px;
-            padding: 2px 12px;
-            font-size: 10px;
-            font-weight: 700;
-            color: #6b4f3a;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            transition: 0.15s;
-        }
-
-        .panel h4 .page-nav button:hover {
-            background: #d9a066;
-            color: #fff6ea;
-        }
-
-        .panel h4 .page-nav button.active-page {
-            background: #d9a066;
-            color: #fff6ea;
-        }
-
-        .panel-content {
-            font-size: 14px;
-            color: #3d3527;
-            line-height: 1.6;
-        }
-
-        .panel-content .page {
-            display: none;
-        }
-
-        .panel-content .page.active {
-            display: block;
-            animation: fadeSlide 0.25s ease;
-        }
-
-        .panel-content .page p {
-            margin-bottom: 8px;
-        }
-
-        .panel-content .page ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .panel-content .page ul li {
-            padding: 4px 0;
-            border-bottom: 1px solid #f5ede2;
-            font-size: 13px;
-        }
-
-        .panel-content .page ul li:last-child {
-            border-bottom: none;
-        }
-
-        .panel-content .page ul li strong {
-            color: #b58a6b;
-        }
-
-        .panel-content .page .tag {
-            display: inline-block;
-            background: #f0d5b0;
-            padding: 0 10px;
-            border-radius: 40px;
-            font-size: 10px;
-            font-weight: 700;
-            color: #6b4f3a;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .panel-content .page .tag.cleared {
-            background: #c8e6c8;
-            color: #2f7a2f;
-        }
-
-        .panel-content .page .tag.suspect {
-            background: #fde8e8;
-            color: #a54343;
         }
 
         .resident-item {
@@ -1383,8 +1288,12 @@
         <div id="titleScreen">
             <div class="title-emoji">🍊</div>
             <h1>Santero Island</h1>
+            <h2>A Love Mystery</h2>
             <div class="case-badge-title">📁 Case File: CF-070623</div>
             <div class="sub-desc">
+                A disappearance. Five suspects. One conspiracy.<br />
+                And a love story hiding in the evidence.
+            </div>
             <button class="start-btn" id="startBtn">▶ Begin Investigation</button>
         </div>
 
@@ -1395,8 +1304,7 @@
                 <span>📁 CF-070623 · Santero Island</span>
                 <span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                     <button class="badge-btn" id="residentToggleBtn">📋 Resident List</button>
-                    <button class="badge-btn" id="caseFileToggleBtn">📂 Case File</button>
-                    <button class="badge-btn" id="carrdToggleBtn">🌐 Full Carrd</button>
+                    <button class="badge-btn" id="carrdToggleBtn">📂 Full Carrd</button>
                     <span class="status" id="statusBadge">● ACTIVE</span>
                 </span>
             </div>
@@ -1407,57 +1315,58 @@
                 <div id="residentListContainer"></div>
             </div>
 
+            <!-- ─── VISUAL NOVEL SCENE ─── -->
+            <div class="vn-scene" id="vnScene">
+                <div class="vn-stage" id="vnStage">
+                    <!-- Van Overlay -->
+                    <div class="van-overlay" id="vanOverlay">
+                        <img src="assets/van.png" alt="Van" />
+                    </div>
 
-        <!-- ─── VISUAL NOVEL SCENE ─── -->
-        <div class="vn-scene" id="vnScene">
-            <div class="vn-stage" id="vnStage">
-                <!-- Van Overlay -->
-                <div class="van-overlay" id="vanOverlay">
-                    <img src="assets/van.png" alt="Van" />
+                    <div class="sprite-container" id="spriteContainer">
+                        <div class="sprite-placeholder">🌿</div>
+                    </div>
+                    <div class="vn-dialogue" id="dialogueBox">
+                        <div class="speaker-name" id="speakerName">
+                            <span>📢 Narrator</span>
+                            <span class="badge">▼</span>
+                        </div>
+                        <div class="dialogue-text" id="dialogueText">
+                            <p>Loading investigation...</p>
+                        </div>
+                        <div id="puzzleContainer"></div>
+                        <div id="choiceContainer"></div>
+                        <div class="vn-controls">
+                            <button class="next-btn" id="nextBtn">▶ Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── TREE FINALE ─── -->
+            <div class="tree-finale" id="treeFinale">
+                <div class="fireworks">
+                    <span>🎆</span><span>✨</span><span>🎆</span><span>✨</span>
+                </div>
+                <div style="text-align:center; margin: 0 0 6px;">
+                    <span style="font-size:32px;">🌳</span>
+                    <p style="font-size:14px; color:#8f7a5f; margin-top:-2px;">Our Anniversary Tree — click each orange to open your gift</p>
                 </div>
 
-                <div class="sprite-container" id="spriteContainer">
-                    <div class="sprite-placeholder">🌿</div>
+                <div class="pixel-tree-wrapper">
+                    <div class="pixel-tree" id="pixelTree"></div>
                 </div>
-                <div class="vn-dialogue" id="dialogueBox">
-                    <div class="speaker-name" id="speakerName">
-                        <span>📢 Narrator</span>
-                        <span class="badge">▼</span>
-                    </div>
-                    <div class="dialogue-text" id="dialogueText">
-                        <p>Loading investigation...</p>
-                    </div>
-                    <div id="puzzleContainer"></div>
-                    <div id="choiceContainer"></div>
-                    <div class="vn-controls">
-                        <button class="next-btn" id="nextBtn">▶ Next</button>
-                    </div>
-                </div>
+
+                <div class="fruit-grid-links" id="fruitLinksContainer"></div>
+
+                <div id="giftDisplay" style="display:none;"></div>
+
+                <button class="reset-btn" id="resetBtn">🔄 Play Again</button>
             </div>
-        </div>
+        </div> <!-- end .game-container -->
+    </div> <!-- end .game-wrapper -->
 
-        <!-- ─── TREE FINALE ─── -->
-        <div class="tree-finale" id="treeFinale">
-            <div class="fireworks">
-                <span>🎆</span><span>✨</span><span>🎆</span><span>✨</span>
-            </div>
-            <div style="text-align:center; margin: 0 0 6px;">
-                <span style="font-size:32px;">🌳</span>
-                <p style="font-size:14px; color:#8f7a5f; margin-top:-2px;">Our Anniversary Tree — click each orange to open your gift</p>
-            </div>
-
-            <div class="pixel-tree-wrapper">
-                <div class="pixel-tree" id="pixelTree"></div>
-            </div>
-
-            <div class="fruit-grid-links" id="fruitLinksContainer"></div>
-
-            <div id="giftDisplay" style="display:none;"></div>
-
-            <button class="reset-btn" id="resetBtn">🔄 Play Again</button>
-        </div>
-    </div>
-                <!-- ─── CARRD OVERLAY ─── -->
+    <!-- ─── CARRD OVERLAY ─── -->
     <div id="carrdOverlay">
         <div class="carrd-container">
             <div class="carrd-header">
@@ -1511,27 +1420,6 @@
             'assets/backgrounds/background3.jpg'
         ];
         let bgIndex = 0;
-    <script>
-        // ─── CONFIGURATION ───
-        const FRUIT_URLS = [
-            '#',
-            'https://open.spotify.com/playlist/29cQ44SAYywcLLoiqgsIBZ',
-            '#',
-            'https://example.com/photos',
-            'https://example.com/coupons',
-            'https://example.com/confession',
-            'https://example.com/drawing.png'
-        ];
-
-        const SPRITE_PATH = '3years/assets';
-
-        // ─── BACKGROUND CONFIGURATION ───
-        const BACKGROUNDS = [
-            'assets/background1.jpg',
-            'assets/backgrounds/background2.jpg',
-            'assets/backgrounds/background3.jpg'
-        ];
-        let bgIndex = 0;
 
         // ─── RESIDENT DATA ───
         const residents = [{
@@ -1569,13 +1457,14 @@
             name: 'Agent "B"',
             location: 'Island Liaison Office',
             vehicle: '🚐 Blue Cargo Van — NYC-419',
-            details: 'Undercover investigator.'
+            details: 'A mysterious (and sexy, and smart, and witty, and charming-- but I digress..) operative who\'s been on the island for a month as a "security detail" and apparently specifically requested you for this case. She\'ll act as your very own field agent.'
         }];
 
         // ─── DIALOGUE DATA ───
         const dialogue = [{
+            // 0: Agent B intro
             speaker: '🕵️ Agent B',
-            text: 'Detective Tyler. I\'m Agent B. I\'ve been assigned to this case. The Santero girl vanished at 4:27 PM from the main road. Her parents are... well, they\'re putting on a show.',
+            text: 'Detective Tyler. I\'m Agent B. A mysterious (and sexy, and smart, and witty, and charming-- but I digress..) operative who\'s been on the island for a month as a "security detail" and apparently specifically requested you for this case. She\'ll act as your very own field agent.<br /><br />Now, let\'s get to the case. The Santero girl vanished at 4:27 PM from the main road. Her belongings were found in a ditch — pink Crocs, cracked phone, and a satin ribbon with a cryptic message. Her parents are... well, they\'re putting on a show, but they\'re hiding something. I can feel it.',
             sprite: 'agent_b'
         }, {
             speaker: '📩 Mr. Santero',
@@ -1717,7 +1606,7 @@
             sprite: null
         }, {
             speaker: '🕵️ Agent B',
-            text: 'Okay, okay... NYC‑419 IS my van. I know how that looks-- but it\s not what it looks like, I swear! Ty, you have to believe me-- I\'ve been undercover for months. Sierra-- she CAME to me-- look, I can even show you.. *van door opens*',
+            text: 'Okay, okay... NYC‑419 IS my van. I know how that looks-- but it\'s not what it looks like, I swear! Ty, you have to believe me-- I\'ve been undercover for months. Sierra-- she CAME to me-- look, I can even show you.. *van door opens*',
             sprite: 'agent_b2'
         }, {
             speaker: '👧 Sierra "Vanny" Santero',
@@ -1725,11 +1614,11 @@
             sprite: 'sierra'
         }, {
             speaker: '👧 Sierra "Vanny" Santero',
-            text: 'Haven\'t you noticed that all the residents are couples?? This island *thrives* on them. These "Heartwood Trees" bear the world\'s most delicious fruit every year after the chosen couple gets together. It\'s TIED to you, so hurting a tree hurts the couple!'
+            text: 'Haven\'t you noticed that all the residents are couples?? This island *thrives* on them. These "Heartwood Trees" bear the world\'s most delicious fruit every year after the chosen couple gets together. It\'s TIED to you, so hurting a tree hurts the couple!',
             sprite: 'sierra'
         }, {
             speaker: '👧 Sierra "Vanny" Santero',
-            text: 'I did SO much research on this, and still, my parents were going to sell the island\'s Heartwood to black market buyers. They\'re destroying them! Even after I found the documents, my parents were STILL heading to the airstrip, so I had to run. You can\'t arrest Agent B.'
+            text: 'I did SO much research on this, and still, my parents were going to sell the island\'s Heartwood to black market buyers. They\'re destroying them! Even after I found the documents, my parents were STILL heading to the airstrip, so I had to run. You can\'t arrest Agent B.',
             sprite: 'sierra'
         }, {
             speaker: '🕵️ Agent B',
@@ -1755,8 +1644,8 @@
         let puzzleSolved = {};
         let fruitsPlucked = {};
         let residentPanelOpen = false;
-        let caseFileOpen = false;
 
+        // ─── DOM REFS ───
         const vnScene = document.getElementById('vnScene');
         const treeFinale = document.getElementById('treeFinale');
         const vnStage = document.getElementById('vnStage');
@@ -1771,11 +1660,6 @@
         const residentPanel = document.getElementById('residentPanel');
         const residentToggleBtn = document.getElementById('residentToggleBtn');
         const residentListContainer = document.getElementById('residentListContainer');
-        const caseFilePanel = document.getElementById('caseFilePanel');
-        const caseFileToggleBtn = document.getElementById('caseFileToggleBtn');
-        const caseFilePages = document.querySelectorAll('.page');
-        const pageNavButtons = document.querySelectorAll('.page-nav button');
-        const finalReportContent = document.getElementById('finalReportContent');
 
         // ─── BACKGROUND FUNCTIONS ───
         function cycleBackground() {
@@ -1850,41 +1734,7 @@
             residentPanelOpen = !residentPanelOpen;
             residentPanel.classList.toggle('open', residentPanelOpen);
             this.textContent = residentPanelOpen ? '📋 Hide List' : '📋 Resident List';
-            if (residentPanelOpen && caseFileOpen) {
-                caseFilePanel.classList.remove('open');
-                caseFileOpen = false;
-                caseFileToggleBtn.textContent = '📂 Case File';
-            }
         });
-
-        caseFileToggleBtn.addEventListener('click', function() {
-            caseFileOpen = !caseFileOpen;
-            caseFilePanel.classList.toggle('open', caseFileOpen);
-            this.textContent = caseFileOpen ? '📂 Hide File' : '📂 Case File';
-            if (caseFileOpen && residentPanelOpen) {
-                residentPanel.classList.remove('open');
-                residentPanelOpen = false;
-                residentToggleBtn.textContent = '📋 Resident List';
-            }
-        });
-
-        // ─── CASE FILE PAGE NAV ───
-        pageNavButtons.forEach((btn, idx) => {
-            btn.addEventListener('click', function() {
-                pageNavButtons.forEach(b => b.classList.remove('active-page'));
-                this.classList.add('active-page');
-                caseFilePages.forEach(page => page.classList.remove('active'));
-                document.querySelector(`.page[data-page="${idx}"]`).classList.add('active');
-            });
-        });
-
-        // ─── FINAL REPORT ───
-        function updateFinalReport() {
-            const allSolved = Object.keys(solutions).every(k => puzzleSolved[k]);
-            if (allSolved || currentDialogueIndex >= dialogue.length - 1) {
-                finalReportContent.style.display = 'block';
-            }
-        }
 
         // ─── SPRITE LOADER ───
         function setSprite(spriteId) {
@@ -1959,7 +1809,6 @@
             }
 
             // ─── Show/hide van overlay ───
-            // Show during van confrontation (indices 29, 30, 31)
             if (index >= 29 && index <= 31) {
                 showVan();
             } else {
@@ -2042,8 +1891,6 @@
                     }
                 });
             }
-
-            updateFinalReport();
         }
 
         // ─── BUILD PUZZLE ───
@@ -2057,7 +1904,7 @@
                     div.innerHTML = `
                                 <label>🔎 Enter both first names (space separated):</label>
                                 <div class="puzzle-input-row">
-                                    <input type="text" id="puzzleInput" autocomplete="off" />
+                                    <input type="text" id="puzzleInput" placeholder="e.g. luz amity" autocomplete="off" />
                                     <button id="puzzleBtn">🔍 CHECK</button>
                                 </div>
                                 <div class="puzzle-feedback" id="puzzleFeedback"></div>
@@ -2086,7 +1933,7 @@
                     });
                     sGrid += '</div>';
                     sGrid += `
-                                <label>⚔️ Count the correct weapon amount. — enter the number:</label>
+                                <label>⚔️ Count the correct weapon amount — enter the number:</label>
                                 <div class="puzzle-input-row">
                                     <input type="text" id="puzzleInput" placeholder="number" autocomplete="off" />
                                     <button id="puzzleBtn">⚔️ CHECK</button>
@@ -2156,7 +2003,6 @@
                         input.disabled = true;
                         puzzleSolved[type] = true;
                         nextBtn.disabled = false;
-                        updateFinalReport();
                     } else {
                         fb.className = 'puzzle-feedback error';
                         if (type === 'spotify') {
@@ -2183,7 +2029,6 @@
                 statusBadge.style.background = '#2f7a2f';
                 buildPixelTree();
                 buildFruitLinks();
-                finalReportContent.style.display = 'block';
                 hideVan();
                 return;
             }
@@ -2277,7 +2122,7 @@
         function buildFruitLinks() {
             const container = document.getElementById('fruitLinksContainer');
             container.innerHTML = '';
-            const fruitEmojis = ['🍊', '🍊', '🍊', '🍋', '🍊, '🍋', '🍋'];
+            const fruitEmojis = ['🍊', '🍊', '🍊', '🍋', '🍊', '🍋', '🍋'];
             const fruitLabels = ['Gift 1', 'Gift 2', 'Gift 3', 'Gift 4', 'Gift 5', 'Gift 6', 'Gift 7'];
 
             for (let i = 0; i < 7; i++) {
@@ -2405,22 +2250,8 @@
                 }
                 return;
             }
-                display.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                if (Object.keys(fruitsPlucked).length === 7) {
-                    display.innerHTML += `
-                                <hr class="divider" />
-                                <p style="text-align:center; font-size:18px; font-weight:700; color:#d9a066;">
-                                    🎆 ALL 7 GIFTS HARVESTED! 🎆<br />
-                                    <span style="font-size:14px; font-weight:400; color:#8f7a5f;">
-                                        You solved the case! I knew you'd be perfect in this too.<br />
-                                        <strong>Happy Anniversary, Ty. 🖤</strong>
-                                    </span>
-                                </p>
-                            `;
-                }
-                return;
-            }
 
+            // Other fruits
             const fruitNames = ['', 'Playlist', 'Photo Collage', 'Coupons', 'Confession', 'Drawing'];
             const fruitEmojis = ['', '🎵', '📸', '🎫', '💖', '🎨'];
             const label = fruitNames[index] || 'Gift';
@@ -2451,19 +2282,18 @@
         document.getElementById('resetBtn').addEventListener('click', () => location.reload());
 
         // ─── INIT ───
-        buildResidentList();
-
-        // Set initial background
-        vnStage.style.backgroundImage = `url('${BACKGROUNDS[0]}')`;
-        bgIndex = 1; // next cycle will go to background2
-
-        renderDialogue(0);
-        console.log('🌴 Santero Island mystery loaded. Good luck, Detective!');
-        console.log('📂 Case File: cf070623.carrd.co');
-        console.log('💌 Fruit 3 contains a special letter.');
-        console.log('🕵️ Agent B sprites: agent_b (normal), agent_b2 (van explanation), agent_b3 (blushing)');
-        console.log('🖼️ Backgrounds cycle on new interviews.');
-        console.log('🚐 Van appears during the confrontation.');
+        function initGame() {
+            buildResidentList();
+            vnStage.style.backgroundImage = `url('${BACKGROUNDS[0]}')`;
+            bgIndex = 1;
+            renderDialogue(0);
+            console.log('🌴 Santero Island mystery loaded. Good luck, Detective!');
+            console.log('📂 Full Carrd available via the button.');
+            console.log('💌 Fruit 3 contains a special letter.');
+            console.log('🕵️ Agent B sprites: agent_b (normal), agent_b2 (van explanation), agent_b3 (blushing)');
+            console.log('🖼️ Backgrounds cycle on new interviews.');
+            console.log('🚐 Van appears during the confrontation.');
+        }
     </script>
 </body>
 </html>
