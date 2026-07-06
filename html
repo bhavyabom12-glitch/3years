@@ -1188,44 +1188,44 @@
             name: 'Luz Noceda & Amity Blight',
             location: 'Eastern Bungalow',
             vehicle: 'Matching Mopeds',
-            details: 'Owl House fans. Known for glyph magic and Azura books.'
+            details: 'These adorable highschool sweethearts are inseparable. They really do bring a special sort of magic to the tropical island-- literally. Watch out for scattered glyphs!'
         }, {
             id: 'soyona_brooklynn',
             name: 'Soyona Santos & Brooklynn',
             location: 'Western Ridge',
             vehicle: 'ATV "Raptor"',
-            details: 'Dinosaur trackers. Use drones for thermal imaging.'
+            details: 'Savvy, charming, and clever dinosaur trackers. Their ingenius use of drones for thermal imaging has made them pioneers in their niche, and their cat-and-mouse dynamic will keep you on your toes.'
         }, {
             id: 'naruto_sasuke',
             name: 'Naruto Uzumaki & Sasuke Uchiha',
             location: 'Training Grounds',
             vehicle: 'Red Sports Car',
-            details: 'Ninja training. Known for shuriken and jutsu.'
+            details: 'Two dedicated ninjas-in-training with honor and care practically coded in their DNA. Their energy might be captivating, but protect your head near their training grounds...'
         }, {
             id: 'jax_ragatha',
             name: 'Jax & Ragatha',
             location: 'Digital Circus Tent',
             vehicle: 'Vintage Convertible',
-            details: 'Digital circus performers. Abstract and glitchy.'
+            details: 'These two are the elusive coupled performers of some sort of digital circus. The words most often used to describe them are abstract and glitchy, but no one can deny their chemistry...'
         }, {
             id: 'ellie_abby',
             name: 'Ellie Williams & Abby Anderson',
             location: 'Airstrip Bungalow',
             vehicle: 'Jeep Wrangler',
-            details: 'Survivors. Know their way around a conspiracy.'
+            details: 'Toughened survivors with hearts of gold. Say what you want about them, but they know how to create a home in the worst place-- and, more relevantly, their way around a conspiracy.'
         }, {
             id: 'agent_b',
             name: 'Agent "B"',
             location: 'Island Liaison Office',
             vehicle: '🚐 Blue Cargo Van — NYC-419',
-            details: 'Undercover investigator. Has been on the island for months.'
+            details: 'A mysterious (and smart, and sexy, and funny, and gracious-- but I digress...) operative who/s been on the island for a month by now. This is your very own field agent.'
         }];
 
         // ─── DIALOGUE DATA ───
         const dialogue = [{
             // 0: Opening — Agent B introduction
             speaker: '🕵️ Agent B',
-            text: 'Detective Tyler. I\'m Agent B. I\'ve been assigned to this case. The Santero girl vanished at 4:27 PM from the main road. Her parents are... well, they\'re putting on a show.',
+            text: 'Detective Tyler. I\'m Agent B. I\'ve been assigned to this case. The Santero girl vanished at 4:27 PM from the main road. Her parents are... well. You/ll hear from them soon enough.',
             sprite: 'agent_b'
         }, {
             // 1: Parent message — polite
@@ -1269,7 +1269,7 @@
         }, {
             // 8: Agent B reveals decoded message
             speaker: '🕵️ Agent B',
-            text: 'So the hidden message is... "Tyler, do you know? Missing girls are found by dinosaurs on empty beaches." Creepy... they\'re addressing you specifically! But what do dinosaurs have to do with this??',
+            text: 'So the hidden message is... "Tyler, do you know? Missing girls are found by dinosaurs on empty beaches." Creepy... this psycho is addressing you directly! But what do dinosaurs have to do with this??',
             sprite: 'agent_b'
         }, {
             // 9: Choice — who to interrogate?
@@ -1333,7 +1333,7 @@
         }, {
             // 18: Puzzle — shuriken count
             speaker: '⚔️ Sasuke Uchiha',
-            text: 'There are four swords, eight kunai, and some shurikens. Count the shurikens. That\'s the key.',
+            text: 'There are four swords, eight kunai, and some shurikens. We could count each type-- but which one is the key?',
             sprite: 'sasuke',
             puzzle: 'shuriken'
         }, {
@@ -1916,7 +1916,7 @@
         function buildFruitLinks() {
             const container = document.getElementById('fruitLinksContainer');
             container.innerHTML = '';
-            const fruitEmojis = ['🍊', '🍎', '🍇', '🍉', '🍑', '🍒', '🥝'];
+            const fruitEmojis = ['🍊', '🍊', '🍋', '🍊', '🍊', '🍋', '🍋'];
             const fruitLabels = ['Gift 1', 'Gift 2', 'Gift 3', 'Gift 4', 'Gift 5', 'Gift 6', 'Gift 7'];
 
             for (let i = 0; i < 7; i++) {
@@ -2067,7 +2067,7 @@
                 return;
             }
 
-            const fruitNames = ['', 'Playlist', 'Photo Collage', 'Coupons', 'Confession', 'Drawing'];
+            const fruitNames = ['Playlist', 'Poem', 'will come back!!', 'this too', 'this three :(', 'Drawing which is also in thr works'];
             const fruitEmojis = ['', '🎵', '📸', '🎫', '💖', '🎨'];
             const label = fruitNames[index] || 'Gift';
             const emoji = fruitEmojis[index] || '🎁';
@@ -2085,8 +2085,8 @@
                             <p style="text-align:center; font-size:18px; font-weight:700; color:#d9a066;">
                                 🎆 ALL 7 GIFTS HARVESTED! 🎆<br />
                                 <span style="font-size:14px; font-weight:400; color:#8f7a5f;">
-                                    You solved the case. You saved the island. You saved my heart.<br />
-                                    <strong>Happy Anniversary, Detective. 🖤</strong>
+                                    You solved the case! I knew you would :) <br />
+                                    <strong>Happy Anniversary, Ty. <3 </strong>
                                 </span>
                             </p>
                         `;
