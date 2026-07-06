@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>The Santero Island Case</title>
+    <title>Santero Island</title>
     <style>
         /* ─── RESET & BASE ─── */
         * {
@@ -1287,11 +1287,12 @@
         <!-- ─── TITLE SCREEN ─── -->
         <div id="titleScreen">
             <div class="title-emoji">🍊</div>
-            <h1>The Santero Island Case</h1>
+            <h1>Santero Island</h1>
+            <h2>A Love Mystery</h2>
             <div class="case-badge-title">📁 Case File: CF-070623</div>
             <div class="sub-desc">
-                One disappearance. Five suspects.<br />
-                And a secret hiding in the roots.
+                A disappearance. Five suspects. One conspiracy.<br />
+                And a love story hiding in the evidence.
             </div>
             <button class="start-btn" id="startBtn">▶ Begin Investigation</button>
         </div>
@@ -1460,174 +1461,277 @@
         }];
 
         // ─── DIALOGUE DATA ───
-        const dialogue = [{
-            // 0: Agent B intro
-            speaker: '🕵️ Agent B',
-            text: 'Detective Tyler. I\'m Agent B. A mysterious (and sexy, and smart, and witty, and charming-- but I digress..) operative who\'s been on the island for a month as a "security detail" and apparently specifically requested you for this case. She\'ll act as your very own field agent.<br /><br />Now, let\'s get to the case. The Santero girl vanished at 4:27 PM from the main road. Her belongings were found in a ditch — pink Crocs, cracked phone, and a satin ribbon with a cryptic message. Her parents are... well, they\'re putting on a show, but they\'re hiding something. I can feel it.',
-            sprite: 'agent_b'
-        }, {
-            speaker: '📩 Mr. Santero',
-            text: 'Please, Detective. Find our daughter. We\'ll cooperate fully. Just... bring her home.',
-            sprite: null,
-            parentMessage: { sender: 'Mr. Santero', text: 'Please, Detective. Find our daughter. We\'ll cooperate fully. Just... bring her home.', aggressive: false }
-        }, {
-            speaker: '🔍 Forensics',
-            text: 'Sierra\'s phone was found in a ditch near the Eastern Bungalow. The last photo shows a footprint in the mud — an owl feather and a crescent moon symbol. That\'s a distinct calling card.',
-            sprite: null
-        }, {
-            speaker: '🕵️ Agent B',
-            text: 'That footprint belongs to someone specific. Enter their names below to confirm.',
-            sprite: 'agent_b',
-            puzzle: 'footprint'
-        }, {
-            speaker: '🦉 Luz Noceda',
-            text: 'Oh my gosh, a detective! This is so cool! Okay, okay, so we were at the Boiling Isles at 4:27 PM. I have photos! Eda took them. We were literally eating dinner. But listen — when we flew back over the island, we saw a blue van near the airstrip. It had a plate that said NYC‑419. That\'s not a local plate, right?',
-            sprite: 'luz'
-        }, {
-            speaker: '📝 Amity Blight',
-            text: 'Luz, let them speak. But she\'s right. We also found a weird drawing near the airstrip. It had this glyph on it... it looked like a dinosaur skeleton? Or maybe a raptor? I don\'t know, but it pointed toward the Western Ridge.',
-            sprite: 'amity'
-        }, {
-            speaker: '🕵️ Agent B',
-            text: 'A glyph pointing to the Western Ridge... that\'s where Soyona and Brooklynn live. They drive an ATV called the Raptor. But before we go there, I found something else. A Spotify playlist left near the airstrip. It might have a hidden message. See if you can decode it.',
-            sprite: 'agent_b',
-            puzzle: 'spotify'
-        }, {
-            speaker: '📩 Mr. Santero',
-            text: 'Detective. I hope you\'re not wasting time on dead ends. Focus on finding my daughter. Not on digging up dirt.',
-            sprite: null,
-            parentMessage: { sender: 'Mr. Santero', text: 'Detective. I hope you\'re not wasting time on dead ends. Focus on finding my daughter. Not on digging up dirt.', aggressive: true }
-        }, {
-            speaker: '🕵️ Agent B',
-            text: 'So the hidden message is... "Tyler, do you know? Missing girls are found by dinosaurs on empty beaches." Creepy... they\'re addressing you specifically! But what do dinosaurs have to do with this??',
-            sprite: 'agent_b'
-        }, {
-            speaker: '🕵️ Agent B',
-            text: 'Well, Detective? The glyph pointed to the Western Ridge. And the message mentions dinosaurs. Who do you think we should talk to?',
-            sprite: 'agent_b',
-            choices: [
-                { text: '🦉 Luz & Amity — Eastern Bungalow', nextIndex: 10, correct: false },
-                { text: '🦖 Soyona & Brooklynn — Western Ridge', nextIndex: 11, correct: true },
-                { text: '🍥 Naruto & Sasuke — Training Grounds', nextIndex: 10, correct: false },
-                { text: '🎪 Jax & Ragatha — Digital Circus Tent', nextIndex: 10, correct: false },
-                { text: '🎸 Ellie & Abby — Airstrip Bungalow', nextIndex: 10, correct: false }
-            ]
-        }, {
-            speaker: '❌ Wrong Choice',
-            text: 'The couple looks at you confused. "Why the visit? This evidence doesn\'t even point to us!!" Try again.',
-            sprite: null
-        }, {
-            speaker: '🦖 Soyona Santos',
-            text: 'We were tracking thermal signatures in the jungle at 4:30 PM. Our drone caught a cargo ship docking at the private pier. That\'s weird because the tide was too low for any normal shipping. The ship was called "The Seraphina."',
-            sprite: 'soyona'
-        }, {
-            speaker: '📡 Brooklynn',
-            text: 'We also saw a man taking photos near the pier. We recognized him — it was Gregor, Mr. Santero\'s assistant. He seemed really nervous. He walked toward the Training Grounds after that.',
-            sprite: 'brooklynn'
-        }, {
-            speaker: '🕵️ Agent B',
-            text: 'The Training Grounds... who do you think would\'ve seen something there?',
-            sprite: 'agent_b',
-            choices: [
-                { text: '🦉 Luz & Amity — Eastern Bungalow', nextIndex: 14, correct: false },
-                { text: '🦖 Soyona & Brooklynn — Western Ridge', nextIndex: 14, correct: false },
-                { text: '🍥 Naruto & Sasuke — Training Grounds', nextIndex: 15, correct: true },
-                { text: '🎪 Jax & Ragatha — Digital Circus Tent', nextIndex: 14, correct: false },
-                { text: '🎸 Ellie & Abby — Airstrip Bungalow', nextIndex: 14, correct: false }
-            ]
-        }, {
-            speaker: '❌ Wrong Choice',
-            text: 'The couple shrugs. "We didn\'t see anything. Why would we? We don\'t even live near the Training Grounds." Try again.',
-            sprite: null
-        }, {
-            speaker: '🍥 Naruto Uzumaki',
-            text: 'Believe it! We were training and we saw Gregor walk by with a folder that said BLACK MARKET on it. He looked really suspicious. He went toward the Digital Circus Tent.',
-            sprite: 'naruto'
-        }, {
-            speaker: '⚔️ Sasuke Uchiha',
-            text: 'We recorded the weird behavior then itself, but kept it password-locked on-site so the wrong person couldn\'t access it. The key should be the amount of one type of the weapons we left there.. Naruto.. do you remember?',
-            sprite: 'sasuke'
-        }, {
-            speaker: '🍥 Naruto Uzumaki',
-            text: 'Oh no! I don\'t!! All I remember was that you can\'t really use it in close combat..',
-            sprite: 'naruto'
-        }, {
-            speaker: '⚔️ Sasuke Uchiha',
-            text: 'there\'s shurikens, kunai, and swords here, and they\'re all countable. but what should we count?',
-            sprite: 'sasuke',
-            puzzle: 'shuriken'
-        }, {
-            speaker: '🎪 Jax',
-            text: 'Oh, the folder guy? Yeah, he came by. He was muttering about a signed manifest and a buyer. He said the buyer was meeting him at the Airstrip Bungalow. That\'s Ellie and Abby\'s place.',
-            sprite: 'jax'
-        }, {
-            speaker: '🎀 Ragatha',
-            text: 'He dropped this piece of paper. It\'s all scrambled. I think it\'s some kind of code. Maybe you can make sense of it?',
-            sprite: 'ragatha',
-            puzzle: 'glitch'
-        }, {
-            speaker: '📩 Mrs. Santero',
-            text: 'She always loved books... she\'d stay up all night reading. Please hurry, Detective.',
-            sprite: null,
-            parentMessage: { sender: 'Mrs. Santero', text: 'She always loved books... she\'d stay up all night reading. Please hurry, Detective.', aggressive: false }
-        }, {
-            speaker: '🎸 Ellie Williams',
-            text: 'Yeah, Gregor came by. He was stressed. Told us to stay inside and not mention the ship to anyone. That\'s a red flag if I\'ve ever seen one.',
-            sprite: 'ellie'
-        }, {
-            speaker: '🏹 Abby Anderson',
-            text: 'We looked inside his van. Found a shipping manifest. It said "Heartwood Soil – 500kg – Destination: Black Market Buyer – Departure: 07/06/23 6:00 PM." It was signed by Mr. Santero. The van\'s plate was NYC‑419.',
-            sprite: 'abby',
-            puzzle: 'vanplate'
-        }, {
-            speaker: '📩 Mrs. Santero',
-            text: 'She never knew when to stop snooping around.. she always had to know everything. That\'s what got her into this mess.',
-            sprite: null,
-            parentMessage: { sender: 'Mrs. Santero', text: 'She never knew when to stop snooping around.. she always had to know everything. That\'s what got her into this mess.', aggressive: false }
-        }, {
-            speaker: '📩 Mr. Santero',
-            text: 'I\'ve had enough of this. You\'re supposed to be finding my daughter, not interrogating every resident on the island. Stop wasting time.',
-            sprite: null,
-            parentMessage: { sender: 'Mr. Santero', text: 'I\'ve had enough of this. You\'re supposed to be finding my daughter, not interrogating every resident on the island. Stop wasting time.', aggressive: true }
-        }, {
-            speaker: '📩 Mrs. Santero',
-            text: 'Everyone loved her silliness and passion... the common folk even gave her the inane nickname "Vanny" because she was so fixated on the only vehicle that isn\'t allowed on the island!! Even though it\'s only for environmental reasons, she always used to say she\'d only go off on her own as an independent person in a van someday..',
-            sprite: null,
-            parentMessage: { sender: 'Mrs. Santero', text: 'Everyone loved her silliness and passion... the common folk even gave her the inane nickname "Vanny" because she was so fixated on the only vehicle that isn\'t allowed on the island!! Even though it\'s only for environmental reasons, she always used to say she\'d only go off on her own as an independent person in a van someday..',
-                aggressive: false }
-        }, {
-            speaker: '🧠 Detective\'s Thoughts',
-            text: 'Wait... a van... and no one here has a van except for...',
-            sprite: null
-        }, {
-            speaker: '🧠 Detective\'s Thoughts',
-            text: 'I should check the resident list. There\'s a "More Info" button for each resident. I need to see who has a van.',
-            sprite: null
-        }, {
-            speaker: '🕵️ Agent B',
-            text: 'Okay, okay... NYC‑419 IS my van. I know how that looks-- but it\'s not what it looks like, I swear! Ty, you have to believe me-- I\'ve been undercover for months. Sierra-- she CAME to me-- look, I can even show you.. *van door opens*',
-            sprite: 'agent_b2'
-        }, {
-            speaker: '👧 Sierra "Vanny" Santero',
-            text: 'Detective, wait! I\'m so sorry for all this, but it was the only way. The only reason my parents are so rich is BECAUSE of you guys!',
-            sprite: 'sierra'
-        }, {
-            speaker: '👧 Sierra "Vanny" Santero',
-            text: 'Haven\'t you noticed that all the residents are couples?? This island *thrives* on them. These "Heartwood Trees" bear the world\'s most delicious fruit every year after the chosen couple gets together. It\'s TIED to you, so hurting a tree hurts the couple!',
-            sprite: 'sierra'
-        }, {
-            speaker: '👧 Sierra "Vanny" Santero',
-            text: 'I did SO much research on this, and still, my parents were going to sell the island\'s Heartwood to black market buyers. They\'re destroying them! Even after I found the documents, my parents were STILL heading to the airstrip, so I had to run. You can\'t arrest Agent B.',
-            sprite: 'sierra'
-        }, {
-            speaker: '🕵️ Agent B',
-            text: 'You can\'t stop it now-- not that you would. The drone footage, the shipping manifests, the signatures, and the testimonies from the residents-- all the stuff YOU collected-- is enough to shut everything down. The Santeros are probably negotiating right now. Thanks to you, our Tree is protected, Ty.',
-            sprite: 'agent_b2'
-        }, {
-            speaker: '🕵️ Agent B',
-            text: 'Our tree bore 7 fruits this year. Each one is a gift for you. Click them on the tree to open your Anniversary Gifts. And Tyler... I hope you love them as much as I love you.',
-            sprite: 'agent_b3'
-        }];
+        const dialogue = [
+            // ─── NEW EXCHANGE: Player recognizes Agent B ───
+            {
+                // 0: Agent B greeting
+                speaker: '🕵️ Agent B',
+                text: 'Detective Tyler. I\'m Agent B. I\'ve been assigned to this case.',
+                sprite: 'agent_b'
+            },
+            {
+                // 1: Player says first line
+                speaker: '🧠 Detective',
+                text: '"Bea?? Is that you??"',
+                sprite: null
+            },
+            {
+                // 2: Agent B responds
+                speaker: '🕵️ Agent B',
+                text: 'ummm.. i dont know what you\'re talking about, detective.',
+                sprite: 'agent_b'
+            },
+            {
+                // 3: Player says second line
+                speaker: '🧠 Detective',
+                text: '"Bea. you\'re just wearing a scarf and sunglasses. i can literally tell it\'s you??"',
+                sprite: null
+            },
+            {
+                // 4: Agent B responds
+                speaker: '🕵️ Agent B',
+                text: 'perhaps you should get your eyes checked after we complete this case, detective.',
+                sprite: 'agent_b'
+            },
+            // ─── CONTINUE WITH ORIGINAL INTRO (removed extra description) ───
+            {
+                // 5: Agent B continues with case details
+                speaker: '🕵️ Agent B',
+                text: 'Now, let\'s get to the case. The Santero girl vanished at 4:27 PM from the main road. Her belongings were found in a ditch — pink Crocs, cracked phone, and a satin ribbon with a cryptic message. Her parents are... well, they\'re putting on a show, but they\'re hiding something. I can feel it.',
+                sprite: 'agent_b'
+            },
+            // ─── ORIGINAL DIALOGUE (shifted by +5) ───
+            // 6: Parent message — polite
+            {
+                speaker: '📩 Mr. Santero',
+                text: 'Please, Detective. Find our daughter. We\'ll cooperate fully. Just... bring her home.',
+                sprite: null,
+                parentMessage: { sender: 'Mr. Santero', text: 'Please, Detective. Find our daughter. We\'ll cooperate fully. Just... bring her home.', aggressive: false }
+            },
+            // 7: Crime scene briefing
+            {
+                speaker: '🔍 Forensics',
+                text: 'Sierra\'s phone was found in a ditch near the Eastern Bungalow. The last photo shows a footprint in the mud — an owl feather and a crescent moon symbol. That\'s a distinct calling card.',
+                sprite: null
+            },
+            // 8: Puzzle — footprint
+            {
+                speaker: '🕵️ Agent B',
+                text: 'That footprint belongs to someone specific. Enter their names below to confirm.',
+                sprite: 'agent_b',
+                puzzle: 'footprint'
+            },
+            // 9: Interview 1: Luz & Amity
+            {
+                speaker: '🦉 Luz Noceda',
+                text: 'Oh my gosh, a detective! This is so cool! Okay, okay, so we were at the Boiling Isles at 4:27 PM. I have photos! Eda took them. We were literally eating dinner. But listen — when we flew back over the island, we saw a blue van near the airstrip. It had a plate that said NYC‑419. That\'s not a local plate, right?',
+                sprite: 'luz'
+            },
+            // 10: Amity with glyph
+            {
+                speaker: '📝 Amity Blight',
+                text: 'Luz, let them speak. But she\'s right. We also found a weird drawing near the airstrip. It had this glyph on it... it looked like a dinosaur skeleton? Or maybe a raptor? I don\'t know, but it pointed toward the Western Ridge.',
+                sprite: 'amity'
+            },
+            // 11: Agent B reviews — prompts Spotify puzzle
+            {
+                speaker: '🕵️ Agent B',
+                text: 'A glyph pointing to the Western Ridge... that\'s where Soyona and Brooklynn live. They drive an ATV called the Raptor. But before we go there, I found something else. A Spotify playlist left near the airstrip. It might have a hidden message. See if you can decode it.',
+                sprite: 'agent_b',
+                puzzle: 'spotify'
+            },
+            // 12: Parent message — impatient
+            {
+                speaker: '📩 Mr. Santero',
+                text: 'Detective. I hope you\'re not wasting time on dead ends. Focus on finding my daughter. Not on digging up dirt.',
+                sprite: null,
+                parentMessage: { sender: 'Mr. Santero', text: 'Detective. I hope you\'re not wasting time on dead ends. Focus on finding my daughter. Not on digging up dirt.', aggressive: true }
+            },
+            // 13: Agent B reveals decoded message
+            {
+                speaker: '🕵️ Agent B',
+                text: 'So the hidden message is... "Tyler, do you know? Missing girls are found by dinosaurs on empty beaches." Creepy... they\'re addressing you specifically! But what do dinosaurs have to do with this??',
+                sprite: 'agent_b'
+            },
+            // 14: Choice — who to interrogate? (first choice)
+            {
+                speaker: '🕵️ Agent B',
+                text: 'Well, Detective? The glyph pointed to the Western Ridge. And the message mentions dinosaurs. Who do you think we should talk to?',
+                sprite: 'agent_b',
+                choices: [
+                    { text: '🦉 Luz & Amity — Eastern Bungalow', nextIndex: 15, correct: false },
+                    { text: '🦖 Soyona & Brooklynn — Western Ridge', nextIndex: 16, correct: true },
+                    { text: '🍥 Naruto & Sasuke — Training Grounds', nextIndex: 15, correct: false },
+                    { text: '🎪 Jax & Ragatha — Digital Circus Tent', nextIndex: 15, correct: false },
+                    { text: '🎸 Ellie & Abby — Airstrip Bungalow', nextIndex: 15, correct: false }
+                ]
+            },
+            // 15: Wrong choice response (first)
+            {
+                speaker: '❌ Wrong Choice',
+                text: 'The couple looks at you confused. "Why the visit? This evidence doesn\'t even point to us!!" Try again.',
+                sprite: null
+            },
+            // 16: Soyona & Brooklynn — correct
+            {
+                speaker: '🦖 Soyona Santos',
+                text: 'We were tracking thermal signatures in the jungle at 4:30 PM. Our drone caught a cargo ship docking at the private pier. That\'s weird because the tide was too low for any normal shipping. The ship was called "The Seraphina."',
+                sprite: 'soyona'
+            },
+            // 17: Brooklynn
+            {
+                speaker: '📡 Brooklynn',
+                text: 'We also saw a man taking photos near the pier. We recognized him — it was Gregor, Mr. Santero\'s assistant. He seemed really nervous. He walked toward the Training Grounds after that.',
+                sprite: 'brooklynn'
+            },
+            // 18: Agent B review — prompts second choice
+            {
+                speaker: '🕵️ Agent B',
+                text: 'The Training Grounds... who do you think would\'ve seen something there?',
+                sprite: 'agent_b',
+                choices: [
+                    { text: '🦉 Luz & Amity — Eastern Bungalow', nextIndex: 19, correct: false },
+                    { text: '🦖 Soyona & Brooklynn — Western Ridge', nextIndex: 19, correct: false },
+                    { text: '🍥 Naruto & Sasuke — Training Grounds', nextIndex: 20, correct: true },
+                    { text: '🎪 Jax & Ragatha — Digital Circus Tent', nextIndex: 19, correct: false },
+                    { text: '🎸 Ellie & Abby — Airstrip Bungalow', nextIndex: 19, correct: false }
+                ]
+            },
+            // 19: Wrong choice response (second)
+            {
+                speaker: '❌ Wrong Choice',
+                text: 'The couple shrugs. "We didn\'t see anything. Why would we? We don\'t even live near the Training Grounds." Try again.',
+                sprite: null
+            },
+            // 20: Naruto & Sasuke
+            {
+                speaker: '🍥 Naruto Uzumaki',
+                text: 'Believe it! We were training and we saw Gregor walk by with a folder that said BLACK MARKET on it. He looked really suspicious. He went toward the Digital Circus Tent.',
+                sprite: 'naruto'
+            },
+            // 21: Sasuke with shuriken puzzle
+            {
+                speaker: '⚔️ Sasuke Uchiha',
+                text: 'We recorded the weird behavior then itself, but kept it password-locked on-site so the wrong person couldn\'t access it. The key should be the amount of one type of the weapons we left there.. Naruto.. do you remember?',
+                sprite: 'sasuke'
+            },
+            // 22: Naruto response
+            {
+                speaker: '🍥 Naruto Uzumaki',
+                text: 'Oh no! I don\'t!! All I remember was that you can\'t really use it in close combat..',
+                sprite: 'naruto'
+            },
+            // 23: Puzzle — shuriken count
+            {
+                speaker: '⚔️ Sasuke Uchiha',
+                text: 'there\'s shurikens, kunai, and swords here, and they\'re all countable. but what should we count?',
+                sprite: 'sasuke',
+                puzzle: 'shuriken'
+            },
+            // 24: Jax & Ragatha
+            {
+                speaker: '🎪 Jax',
+                text: 'Oh, the folder guy? Yeah, he came by. He was muttering about a signed manifest and a buyer. He said the buyer was meeting him at the Airstrip Bungalow. That\'s Ellie and Abby\'s place.',
+                sprite: 'jax'
+            },
+            // 25: Ragatha with glitch puzzle
+            {
+                speaker: '🎀 Ragatha',
+                text: 'He dropped this piece of paper. It\'s all scrambled. I think it\'s some kind of code. Maybe you can make sense of it?',
+                sprite: 'ragatha',
+                puzzle: 'glitch'
+            },
+            // 26: Parent message — Mrs. Santero memory
+            {
+                speaker: '📩 Mrs. Santero',
+                text: 'She always loved books... she\'d stay up all night reading. Please hurry, Detective.',
+                sprite: null,
+                parentMessage: { sender: 'Mrs. Santero', text: 'She always loved books... she\'d stay up all night reading. Please hurry, Detective.', aggressive: false }
+            },
+            // 27: Ellie & Abby
+            {
+                speaker: '🎸 Ellie Williams',
+                text: 'Yeah, Gregor came by. He was stressed. Told us to stay inside and not mention the ship to anyone. That\'s a red flag if I\'ve ever seen one.',
+                sprite: 'ellie'
+            },
+            // 28: Abby — van plate puzzle
+            {
+                speaker: '🏹 Abby Anderson',
+                text: 'We looked inside his van. Found a shipping manifest. It said "Heartwood Soil – 500kg – Destination: Black Market Buyer – Departure: 07/06/23 6:00 PM." It was signed by Mr. Santero. The van\'s plate was NYC‑419.',
+                sprite: 'abby',
+                puzzle: 'vanplate'
+            },
+            // 29: Parent message — Mrs. Santero memory 2
+            {
+                speaker: '📩 Mrs. Santero',
+                text: 'She never knew when to stop snooping around.. she always had to know everything. That\'s what got her into this mess.',
+                sprite: null,
+                parentMessage: { sender: 'Mrs. Santero', text: 'She never knew when to stop snooping around.. she always had to know everything. That\'s what got her into this mess.', aggressive: false }
+            },
+            // 30: Parent message — aggressive Mr. Santero
+            {
+                speaker: '📩 Mr. Santero',
+                text: 'I\'ve had enough of this. You\'re supposed to be finding my daughter, not interrogating every resident on the island. Stop wasting time.',
+                sprite: null,
+                parentMessage: { sender: 'Mr. Santero', text: 'I\'ve had enough of this. You\'re supposed to be finding my daughter, not interrogating every resident on the island. Stop wasting time.', aggressive: true }
+            },
+            // 31: Parent message — Mrs. Santero with Vanny clue
+            {
+                speaker: '📩 Mrs. Santero',
+                text: 'Everyone loved her silliness and passion... the common folk even gave her the inane nickname "Vanny" because she was so fixated on the only vehicle that isn\'t allowed on the island!! Even though it\'s only for environmental reasons, she always used to say she\'d only go off on her own as an independent person in a van someday..',
+                sprite: null,
+                parentMessage: { sender: 'Mrs. Santero', text: 'Everyone loved her silliness and passion... the common folk even gave her the inane nickname "Vanny" because she was so fixated on the only vehicle that isn\'t allowed on the island!! Even though it\'s only for environmental reasons, she always used to say she\'d only go off on her own as an independent person in a van someday..',
+                    aggressive: false }
+            },
+            // 32: Internal dialogue — van realization
+            {
+                speaker: '🧠 Detective\'s Thoughts',
+                text: 'Wait... a van... and no one here has a van except for...',
+                sprite: null
+            },
+            // 33: Internal dialogue — check resident list
+            {
+                speaker: '🧠 Detective\'s Thoughts',
+                text: 'I should check the resident list. There\'s a "More Info" button for each resident. I need to see who has a van.',
+                sprite: null
+            },
+            // 34: Agent B reveal (van explanation) — uses agent_b2
+            {
+                speaker: '🕵️ Agent B',
+                text: 'Okay, okay... NYC‑419 IS my van. I know how that looks-- but it\'s not what it looks like, I swear! Ty, you have to believe me-- I\'ve been undercover for months. Sierra-- she CAME to me-- look, I can even show you.. *van door opens*',
+                sprite: 'agent_b2'
+            },
+            // 35: Sierra
+            {
+                speaker: '👧 Sierra "Vanny" Santero',
+                text: 'Detective, wait! I\'m so sorry for all this, but it was the only way. The only reason my parents are so rich is BECAUSE of you guys!',
+                sprite: 'sierra'
+            },
+            // 36: Sierra second line
+            {
+                speaker: '👧 Sierra "Vanny" Santero',
+                text: 'Haven\'t you noticed that all the residents are couples?? This island *thrives* on them. These "Heartwood Trees" bear the world\'s most delicious fruit every year after the chosen couple gets together. It\'s TIED to you, so hurting a tree hurts the couple!',
+                sprite: 'sierra'
+            },
+            // 37: Sierra third line
+            {
+                speaker: '👧 Sierra "Vanny" Santero',
+                text: 'I did SO much research on this, and still, my parents were going to sell the island\'s Heartwood to black market buyers. They\'re destroying them! Even after I found the documents, my parents were STILL heading to the airstrip, so I had to run. You can\'t arrest Agent B.',
+                sprite: 'sierra'
+            },
+            // 38: Agent B final explanation — uses agent_b2
+            {
+                speaker: '🕵️ Agent B',
+                text: 'You can\'t stop it now-- not that you would. The drone footage, the shipping manifests, the signatures, and the testimonies from the residents-- all the stuff YOU collected-- is enough to shut everything down. The Santeros are probably negotiating right now. Thanks to you, our Tree is protected, Ty.',
+                sprite: 'agent_b2'
+            },
+            // 39: Agent B tree reveal (happy ending / blushing) — uses agent_b3
+            {
+                speaker: '🕵️ Agent B',
+                text: 'Our tree bore 7 fruits this year. Each one is a gift for you. Click them on the tree to open your Anniversary Gifts. And Tyler... I hope you love them as much as I love you.',
+                sprite: 'agent_b3'
+            }
+        ];
 
         // ─── PUZZLE SOLUTIONS ───
         const solutions = {
@@ -1794,8 +1898,8 @@
             ['⬡', '⭐', '⬡', '⬡', '⭐']
         ];
 
-        // ─── INTERVIEW TRIGGER INDICES ───
-        const INTERVIEW_INDICES = [4, 11, 15, 19, 22, 29];
+        // ─── INTERVIEW TRIGGER INDICES (updated) ───
+        const INTERVIEW_INDICES = [9, 16, 20, 24, 27, 34];
 
         // ─── RENDER DIALOGUE ───
         function renderDialogue(index) {
@@ -1808,7 +1912,7 @@
             }
 
             // ─── Show/hide van overlay ───
-            if (index >= 29 && index <= 31) {
+            if (index >= 34 && index <= 38) {
                 showVan();
             } else {
                 hideVan();
@@ -1871,7 +1975,7 @@
                 statusBadge.style.background = '#d9a066';
             }
 
-            if (index === 28) {
+            if (index === 33) {
                 residentPanelOpen = true;
                 residentPanel.classList.add('open');
                 residentToggleBtn.textContent = '📋 Hide List';
@@ -2269,8 +2373,8 @@
                             <p style="text-align:center; font-size:18px; font-weight:700; color:#d9a066;">
                                 🎆 ALL 7 GIFTS HARVESTED! 🎆<br />
                                 <span style="font-size:14px; font-weight:400; color:#8f7a5f;">
-                                    You solved the case. You saved the island. You saved my heart.<br />
-                                    <strong>Happy Anniversary, Detective. 🖤</strong>
+                                    You solved the case! I knew you could. <3 <br />
+                                    <strong>Happy Anniversary, Ty. 🖤</strong>
                                 </span>
                             </p>
                         `;
