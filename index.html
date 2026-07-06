@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>🍊 Santero Island · A Love Mystery</title>
+    <title>🍊 Santero Island </title>
     <style>
-        /* ─── RESET & BASE ─── */
+       /* ─── RESET & BASE ─── */
         * {
             margin: 0;
             padding: 0;
@@ -23,8 +23,13 @@
             background-image: radial-gradient(circle at 20% 30%, #fde8d0 0%, #fcf5c8 60%, #d4e6f5 100%);
         }
 
-        .game-container {
+        .game-wrapper {
             max-width: 780px;
+            width: 100%;
+            position: relative;
+        }
+
+        .game-container {
             width: 100%;
             background: rgba(255, 251, 240, 0.88);
             backdrop-filter: blur(4px);
@@ -34,8 +39,240 @@
             border: 2px solid #f0d5b0;
             transition: all 0.3s;
             position: relative;
+            display: none;
         }
 
+        .game-container.visible {
+            display: block;
+        }
+
+        /* ─── TITLE SCREEN ─── */
+        #titleScreen {
+            width: 100%;
+            min-height: 580px;
+            background: #fef7e9;
+            border-radius: 48px 48px 32px 32px;
+            border: 2px solid #f0d5b0;
+            box-shadow: 0 20px 60px rgba(180, 130, 80, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #titleScreen::before {
+            content: '🌴';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 60px;
+            opacity: 0.2;
+        }
+
+        #titleScreen::after {
+            content: '🌊';
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 60px;
+            opacity: 0.2;
+        }
+
+        #titleScreen .title-emoji {
+            font-size: 72px;
+            margin-bottom: 8px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        #titleScreen h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #b58a6b;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 12px rgba(180, 130, 80, 0.15);
+            font-family: 'Georgia', serif;
+        }
+
+        #titleScreen h2 {
+            font-size: 24px;
+            color: #8f7a5f;
+            font-weight: 400;
+            margin-top: 4px;
+            letter-spacing: 4px;
+            font-style: italic;
+        }
+
+        #titleScreen .case-badge-title {
+            display: inline-block;
+            background: #f0d5b0;
+            padding: 4px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #6b4f3a;
+            margin-top: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        #titleScreen .start-btn {
+            margin-top: 32px;
+            background: #d9a066;
+            border: none;
+            border-radius: 60px;
+            padding: 16px 48px;
+            font-weight: 700;
+            font-size: 18px;
+            color: #2f2a1f;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 6px 0 #b8834a;
+            transition: 0.15s;
+            letter-spacing: 1px;
+        }
+
+        #titleScreen .start-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 1px 0 #b8834a;
+        }
+
+        #titleScreen .start-btn:hover {
+            background: #e8b07a;
+            transform: scale(1.02);
+        }
+
+        #titleScreen .sub-desc {
+            font-size: 14px;
+            color: #8f7a5f;
+            margin-top: 16px;
+            max-width: 400px;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* ─── CARRD OVERLAY ─── */
+        #carrdOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeSlide 0.3s ease;
+        }
+
+        #carrdOverlay.open {
+            display: flex;
+        }
+
+        .carrd-container {
+            background: #fffbf4;
+            border-radius: 32px;
+            width: 100%;
+            max-width: 860px;
+            height: 90vh;
+            max-height: 700px;
+            padding: 12px;
+            border: 2px solid #f0d5b0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carrd-container .carrd-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px 10px 8px;
+            border-bottom: 2px dashed #f0d5b0;
+        }
+
+        .carrd-container .carrd-header span {
+            font-weight: 700;
+            color: #b58a6b;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .carrd-container .carrd-header button {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #8f7a5f;
+            transition: 0.2s;
+            padding: 0 8px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .carrd-container .carrd-header button:hover {
+            color: #a54343;
+            transform: scale(1.1);
+        }
+
+        .carrd-container iframe {
+            width: 100%;
+            flex: 1;
+            border: none;
+            border-radius: 16px;
+            background: #fffbf4;
+        }
+
+        /* ─── RESPONSIVE FOR TITLE ─── */
+        @media (max-width: 600px) {
+            #titleScreen h1 {
+                font-size: 30px;
+            }
+            #titleScreen h2 {
+                font-size: 18px;
+            }
+            #titleScreen .title-emoji {
+                font-size: 50px;
+            }
+            #titleScreen .start-btn {
+                padding: 14px 32px;
+                font-size: 16px;
+            }
+            .carrd-container {
+                height: 80vh;
+                max-height: 500px;
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            #titleScreen h1 {
+                font-size: 24px;
+            }
+            #titleScreen h2 {
+                font-size: 16px;
+            }
+            #titleScreen .title-emoji {
+                font-size: 40px;
+            }
+        }
+
+        /* ─── CASE BADGE ─── */
         .case-badge {
             display: flex;
             justify-content: space-between;
@@ -875,6 +1112,10 @@
                 padding: 16px 12px 14px;
                 border-radius: 32px;
             }
+            #titleScreen {
+                min-height: 400px;
+                padding: 30px 20px;
+            }
             .vn-stage {
                 flex-direction: column;
                 align-items: center;
@@ -984,11 +1225,29 @@
                 font-size: 14px;
                 line-height: 1.8;
             }
+            .carrd-container {
+                height: 80vh;
+                max-height: 500px;
+                padding: 8px;
+            }
         }
 
         @media (max-width: 400px) {
             .game-container {
                 padding: 10px 6px 12px;
+            }
+            #titleScreen {
+                min-height: 300px;
+                padding: 20px 16px;
+            }
+            #titleScreen h1 {
+                font-size: 24px;
+            }
+            #titleScreen h2 {
+                font-size: 16px;
+            }
+            #titleScreen .title-emoji {
+                font-size: 40px;
             }
             .sprite-container {
                 width: 60px;
@@ -1057,6 +1316,11 @@
                 font-size: 13px;
                 line-height: 1.7;
             }
+            .carrd-container {
+                height: 70vh;
+                max-height: 400px;
+                padding: 6px;
+            }
         }
 
         ::-webkit-scrollbar {
@@ -1114,100 +1378,35 @@
 </head>
 <body>
 
-    <div class="game-container">
-        <!-- Case Badge -->
-        <div class="case-badge">
-            <span>📁 CF-070623 · Santero Island</span>
-            <span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                <button class="badge-btn" id="residentToggleBtn">📋 Resident List</button>
-                <button class="badge-btn" id="caseFileToggleBtn">📂 Case File</button>
-                <span class="status" id="statusBadge">● ACTIVE</span>
-            </span>
+    <div class="game-wrapper">
+        <!-- ─── TITLE SCREEN ─── -->
+        <div id="titleScreen">
+            <div class="title-emoji">🍊</div>
+            <h1>Santero Island</h1>
+            <div class="case-badge-title">📁 Case File: CF-070623</div>
+            <div class="sub-desc">
+            <button class="start-btn" id="startBtn">▶ Begin Investigation</button>
         </div>
 
-        <!-- Resident List Panel -->
-        <div class="panel" id="residentPanel">
-            <h4>🏝️ Santero Island Residents</h4>
-            <div id="residentListContainer"></div>
-        </div>
-
-        <!-- Case File Panel -->
-        <div class="panel" id="caseFilePanel">
-            <h4>
-                📂 Case File: CF-070623
-                <span class="page-nav">
-                    <button data-page="0" class="active-page">📋 Summary</button>
-                    <button data-page="1">📄 Evidence</button>
-                    <button data-page="2">👤 Suspects</button>
-                    <button data-page="3">📞 Interviews</button>
-                    <button data-page="4">📑 Report</button>
+        <!-- ─── GAME CONTAINER ─── -->
+        <div class="game-container" id="gameContainer">
+            <!-- Case Badge -->
+            <div class="case-badge">
+                <span>📁 CF-070623 · Santero Island</span>
+                <span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <button class="badge-btn" id="residentToggleBtn">📋 Resident List</button>
+                    <button class="badge-btn" id="caseFileToggleBtn">📂 Case File</button>
+                    <button class="badge-btn" id="carrdToggleBtn">🌐 Full Carrd</button>
+                    <span class="status" id="statusBadge">● ACTIVE</span>
                 </span>
-            </h4>
-            <div class="panel-content" id="caseFileContent">
-                <div class="page active" data-page="0">
-                    <p><strong>📋 CASE SUMMARY</strong></p>
-                    <p><strong>Case:</strong> Disappearance of Sierra "Vanny" Santero<br />
-                    <strong>Date:</strong> 07/06/23 · 4:27 PM<br />
-                    <strong>Location:</strong> Santero Island<br />
-                    <strong>Lead Detective:</strong> Tyler<br />
-                    <strong>Field Agent:</strong> "B"</p>
-                    <p>Heiress to Santero Island, Sierra Santero, vanished en route to the private airstrip. Her belongings were found in a ditch — pink Crocs, cracked phone, and a satin ribbon with a cryptic message.</p>
-                    <p>The victim's parents are cooperative but increasingly agitated. Mr. Santero has been pressuring the investigation to stay on track, while Mrs. Santero has been sharing memories of her daughter.</p>
-                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">🔍 <em>Navigate the tabs above for evidence, suspect profiles, interview transcripts, and the final report.</em></p>
-                </div>
-
-                <div class="page" data-page="1">
-                    <p><strong>📦 EVIDENCE LOG</strong></p>
-                    <ul>
-                        <li><strong>#001</strong> — Pink Crocs (found in a ditch near the main road)</li>
-                        <li><strong>#002</strong> — Cracked phone (last photo: footprint with owl feather + crescent moon symbol)</li>
-                        <li><strong>#003</strong> — Satin blue ribbon (cryptic riddle: <em>"I'm not a sushi, nor a spring roll... What two‑word snack holds the next key?"</em> → "pizza rolls")</li>
-                        <li><strong>#004</strong> — Glyph drawing (found near the airstrip; points to Western Ridge)</li>
-                        <li><strong>#005</strong> — Spotify playlist (hidden message: <em>"Tyler, do you know? Missing girls are found by dinosaurs on empty beaches"</em>)</li>
-                        <li><strong>#006</strong> — Training ground weapons cache (key = 7 shurikens)</li>
-                        <li><strong>#007</strong> — Glitched note (unscrambled: "BALANCE")</li>
-                        <li><strong>#008</strong> — Shipping manifest (Heartwood Soil — 500kg — Destination: Black Market Buyer — Departure: 07/06/23 6:00 PM; signed by Mr. Santero)</li>
-                    </ul>
-                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">📌 <em>All evidence has been catalogued and is admissible.</em></p>
-                </div>
-
-                <div class="page" data-page="2">
-                    <p><strong>👤 SUSPECT PROFILES</strong></p>
-                    <ul>
-                        <li><strong>Luz &amp; Amity</strong> — Eastern Bungalow. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Alibi confirmed — were at the Boiling Isles at the time of the abduction.</span></li>
-                        <li><strong>Soyona &amp; Brooklynn</strong> — Western Ridge. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Provided drone footage confirming the cargo ship at the private pier.</span></li>
-                        <li><strong>Naruto &amp; Sasuke</strong> — Training Grounds. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Provided password‑locked evidence from their training ground.</span></li>
-                        <li><strong>Jax &amp; Ragatha</strong> — Digital Circus Tent. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Provided the glitched note and overheard Gregor's conversation.</span></li>
-                        <li><strong>Ellie &amp; Abby</strong> — Airstrip Bungalow. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Found the shipping manifest in the van.</span></li>
-                        <li style="margin-top:8px; border-top:1px dashed #f0d5b0; padding-top:8px;"><strong>⚠️ Agent "B"</strong> — Island Liaison Office. <span class="tag suspect">🔴 UNDER INVESTIGATION</span><br /><span style="font-size:12px; color:#8f7a5f;">Only resident with a van (NYC‑419). Van was seen at multiple locations during the abduction.</span></li>
-                    </ul>
-                </div>
-
-                <div class="page" data-page="3">
-                    <p><strong>📞 INTERVIEW SUMMARIES</strong></p>
-                    <ul>
-                        <li><strong>Luz &amp; Amity:</strong> Saw blue van (NYC‑419) near the airstrip at 4:45 PM. Found the glyph drawing pointing to Western Ridge. ✅ Cleared.</li>
-                        <li><strong>Soyona &amp; Brooklynn:</strong> Drone caught cargo ship "The Seraphina" at the private pier at 4:30 PM. Saw Gregor heading to the Training Grounds. ✅ Cleared.</li>
-                        <li><strong>Naruto &amp; Sasuke:</strong> Saw Gregor with a "BLACK MARKET" folder walking toward the Digital Circus Tent. Password‑locked evidence (key = 7 shurikens). ✅ Cleared.</li>
-                        <li><strong>Jax &amp; Ragatha:</strong> Overheard Gregor mention a signed manifest and a buyer meeting at the Airstrip Bungalow. Provided the glitched note. ✅ Cleared.</li>
-                        <li><strong>Ellie &amp; Abby:</strong> Found the shipping manifest inside Gregor's van. Signed by Mr. Santero. Plate: NYC‑419. ✅ Cleared.</li>
-                    </ul>
-                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">📌 <em>All interviewed residents have been cleared of involvement in the abduction.</em></p>
-                </div>
-
-                <div class="page" data-page="4">
-                    <p><strong>📑 FINAL REPORT — CLASSIFIED</strong></p>
-                    <p style="font-size:14px; color:#8f7a5f;"><em>Awaiting final confirmation from lead detective.</em></p>
-                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">🔐 <em>This report will auto‑populate once the investigation is complete.</em></p>
-                    <div id="finalReportContent" style="display:none; margin-top:10px; padding:12px; background:#f5ede2; border-radius:12px; border:2px solid #d9a066;">
-                        <p><strong>✅ CASE SOLVED</strong></p>
-                        <p>Sierra Santero faked her disappearance to expose her parents' Heartwood smuggling operation. Agent "B" (undercover) assisted her. The Santeros have been charged with illegal trafficking. Sierra is alive and safe.</p>
-                        <p style="margin-top:6px; font-style:italic; color:#6b4f3a;">"The island is safe. And our Love Tree is protected." — Agent B</p>
-                        <p style="margin-top:6px; font-size:12px; color:#8f7a5f;"><strong>Case closed.</strong> All evidence has been submitted. The Santeros have agreed to a deal in exchange for leniency.</p>
-                    </div>
-                </div>
             </div>
-        </div>
+
+            <!-- Resident List Panel -->
+            <div class="panel" id="residentPanel">
+                <h4>🏝️ Santero Island Residents</h4>
+                <div id="residentListContainer"></div>
+            </div>
+
 
         <!-- ─── VISUAL NOVEL SCENE ─── -->
         <div class="vn-scene" id="vnScene">
@@ -1258,8 +1457,40 @@
             <button class="reset-btn" id="resetBtn">🔄 Play Again</button>
         </div>
     </div>
+                <!-- ─── CARRD OVERLAY ─── -->
+    <div id="carrdOverlay">
+        <div class="carrd-container">
+            <div class="carrd-header">
+                <span>📂 cf070623.carrd.co</span>
+                <button id="closeCarrdBtn">✕</button>
+            </div>
+            <iframe src="https://cf070623.carrd.co/" title="Case File Carrd"></iframe>
+        </div>
+    </div>
 
     <script>
+        // ─── TITLE SCREEN LOGIC ───
+        document.getElementById('startBtn').addEventListener('click', function() {
+            document.getElementById('titleScreen').style.display = 'none';
+            document.getElementById('gameContainer').classList.add('visible');
+            // Initialize the game after the container is visible
+            initGame();
+        });
+
+        // ─── CARRD OVERLAY LOGIC ───
+        const carrdOverlay = document.getElementById('carrdOverlay');
+        document.getElementById('carrdToggleBtn').addEventListener('click', function() {
+            carrdOverlay.classList.toggle('open');
+        });
+        document.getElementById('closeCarrdBtn').addEventListener('click', function() {
+            carrdOverlay.classList.remove('open');
+        });
+        carrdOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('open');
+            }
+        });
+
         // ─── CONFIGURATION ───
         const FRUIT_URLS = [
             '#',
@@ -1280,6 +1511,27 @@
             'assets/backgrounds/background3.jpg'
         ];
         let bgIndex = 0;
+    <script>
+        // ─── CONFIGURATION ───
+        const FRUIT_URLS = [
+            '#',
+            'https://open.spotify.com/playlist/29cQ44SAYywcLLoiqgsIBZ',
+            '#',
+            'https://example.com/photos',
+            'https://example.com/coupons',
+            'https://example.com/confession',
+            'https://example.com/drawing.png'
+        ];
+
+        const SPRITE_PATH = 'main';
+
+        // ─── BACKGROUND CONFIGURATION ───
+        const BACKGROUNDS = [
+            'main/background1.jpg',
+            'main/backgrounds/background2.jpg',
+            'main/backgrounds/background3.jpg'
+        ];
+        let bgIndex = 0;
 
         // ─── RESIDENT DATA ───
         const residents = [{
@@ -1287,37 +1539,37 @@
             name: 'Luz Noceda & Amity Blight',
             location: 'Eastern Bungalow',
             vehicle: 'Matching Mopeds',
-            details: 'Owl House fans. Known for glyph magic and Azura books.'
+            details: 'Witches-in-training.'
         }, {
             id: 'soyona_brooklynn',
             name: 'Soyona Santos & Brooklynn',
             location: 'Western Ridge',
             vehicle: 'ATV "Raptor"',
-            details: 'Dinosaur trackers. Use drones for thermal imaging.'
+            details: 'Dinosaur trackers.'
         }, {
             id: 'naruto_sasuke',
             name: 'Naruto Uzumaki & Sasuke Uchiha',
             location: 'Training Grounds',
             vehicle: 'Red Sports Car',
-            details: 'Ninja training. Known for shuriken and jutsu.'
+            details: 'Ninjas-in-training.'
         }, {
             id: 'jax_ragatha',
             name: 'Jax & Ragatha',
             location: 'Digital Circus Tent',
             vehicle: 'Vintage Convertible',
-            details: 'Digital circus performers. Abstract and glitchy.'
+            details: 'Performers.'
         }, {
             id: 'ellie_abby',
             name: 'Ellie Williams & Abby Anderson',
             location: 'Airstrip Bungalow',
             vehicle: 'Jeep Wrangler',
-            details: 'Survivors. Know their way around a conspiracy.'
+            details: 'Survivalists.'
         }, {
             id: 'agent_b',
             name: 'Agent "B"',
             location: 'Island Liaison Office',
             vehicle: '🚐 Blue Cargo Van — NYC-419',
-            details: 'Undercover investigator. Has been on the island for months.'
+            details: 'Undercover investigator.'
         }];
 
         // ─── DIALOGUE DATA ───
@@ -1465,15 +1717,23 @@
             sprite: null
         }, {
             speaker: '🕵️ Agent B',
-            text: 'NYC‑419. That\'s my van. I know how that looks. But I\'m not the bad guy here, Tyler. I\'ve been undercover for months. Sierra came to me with the evidence. I helped her disappear so we could build a case without her parents silencing her.',
+            text: 'Okay, okay... NYC‑419 IS my van. I know how that looks-- but it\s not what it looks like, I swear! Ty, you have to believe me-- I\'ve been undercover for months. Sierra-- she CAME to me-- look, I can even show you.. *van door opens*',
             sprite: 'agent_b2'
         }, {
             speaker: '👧 Sierra "Vanny" Santero',
-            text: 'Detective! I\'m so sorry for all the drama. But my parents were going to sell the island\'s Heartwood to black market buyers. They\'re destroying the Love Trees. I found the documents and they called me crazy. So I ran. Agent B helped me. She\'s not a suspect. She\'s a hero.',
+            text: 'Detective, wait! I\'m so sorry for all this, but it was the only way. The only reason my parents are so rich is BECAUSE of you guys!',
+            sprite: 'sierra'
+        }, {
+            speaker: '👧 Sierra "Vanny" Santero',
+            text: 'Haven\'t you noticed that all the residents are couples?? This island *thrives* on them. These "Heartwood Trees" bear the world\'s most delicious fruit every year after the chosen couple gets together. It\'s TIED to you, so hurting a tree hurts the couple!'
+            sprite: 'sierra'
+        }, {
+            speaker: '👧 Sierra "Vanny" Santero',
+            text: 'I did SO much research on this, and still, my parents were going to sell the island\'s Heartwood to black market buyers. They\'re destroying them! Even after I found the documents, my parents were STILL heading to the airstrip, so I had to run. You can\'t arrest Agent B.'
             sprite: 'sierra'
         }, {
             speaker: '🕵️ Agent B',
-            text: 'With the drone footage, the shipping manifests, the signatures, and the testimonies from the residents, we have enough to shut down the entire operation. The Santeros have agreed to a deal. The island is safe. And our Love Tree is protected.',
+            text: 'You can\'t stop it now-- not that you would. The drone footage, the shipping manifests, the signatures, and the testimonies from the residents-- all the stuff YOU collected-- is enough to shut everything down. The Santeros are probably negotiating right now. Thanks to you, our Tree is protected, Ty.',
             sprite: 'agent_b2'
         }, {
             speaker: '🕵️ Agent B',
@@ -1797,7 +2057,7 @@
                     div.innerHTML = `
                                 <label>🔎 Enter both first names (space separated):</label>
                                 <div class="puzzle-input-row">
-                                    <input type="text" id="puzzleInput" placeholder="e.g. luz amity" autocomplete="off" />
+                                    <input type="text" id="puzzleInput" autocomplete="off" />
                                     <button id="puzzleBtn">🔍 CHECK</button>
                                 </div>
                                 <div class="puzzle-feedback" id="puzzleFeedback"></div>
@@ -1826,7 +2086,7 @@
                     });
                     sGrid += '</div>';
                     sGrid += `
-                                <label>⚔️ Count the shurikens (⭐) — enter the number:</label>
+                                <label>⚔️ Count the correct weapon amount. — enter the number:</label>
                                 <div class="puzzle-input-row">
                                     <input type="text" id="puzzleInput" placeholder="number" autocomplete="off" />
                                     <button id="puzzleBtn">⚔️ CHECK</button>
@@ -2017,7 +2277,7 @@
         function buildFruitLinks() {
             const container = document.getElementById('fruitLinksContainer');
             container.innerHTML = '';
-            const fruitEmojis = ['🍊', '🍎', '🍇', '🍉', '🍑', '🍒', '🥝'];
+            const fruitEmojis = ['🍊', '🍊', '🍊', '🍋', '🍊, '🍋', '🍋'];
             const fruitLabels = ['Gift 1', 'Gift 2', 'Gift 3', 'Gift 4', 'Gift 5', 'Gift 6', 'Gift 7'];
 
             for (let i = 0; i < 7; i++) {
@@ -2137,21 +2397,14 @@
                                 <p style="text-align:center; font-size:18px; font-weight:700; color:#d9a066;">
                                     🎆 ALL 7 GIFTS HARVESTED! 🎆<br />
                                     <span style="font-size:14px; font-weight:400; color:#8f7a5f;">
-                                        You solved the case. You saved the island. You saved my heart.<br />
-                                        <strong>Happy Anniversary, Detective. 🖤</strong>
+                                        You solved the case! I knew you'd be perfect for this too.<br />
+                                        <strong>Happy Anniversary, Ty. 🖤</strong>
                                     </span>
                                 </p>
                             `;
                 }
                 return;
             }
-
-            if (index === 0) {
-                display.innerHTML = `
-                            <span class="gift-emoji">🍊</span>
-                            <strong>A Sweet Memory</strong>
-                            <p>This orange represents the sweetness we share. Every moment with you is like sunshine on a quiet morning. Keep this memory close to your heart.</p>
-                        `;
                 display.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 if (Object.keys(fruitsPlucked).length === 7) {
                     display.innerHTML += `
@@ -2159,8 +2412,8 @@
                                 <p style="text-align:center; font-size:18px; font-weight:700; color:#d9a066;">
                                     🎆 ALL 7 GIFTS HARVESTED! 🎆<br />
                                     <span style="font-size:14px; font-weight:400; color:#8f7a5f;">
-                                        You solved the case. You saved the island. You saved my heart.<br />
-                                        <strong>Happy Anniversary, Detective. 🖤</strong>
+                                        You solved the case! I knew you'd be perfect in this too.<br />
+                                        <strong>Happy Anniversary, Ty. 🖤</strong>
                                     </span>
                                 </p>
                             `;
