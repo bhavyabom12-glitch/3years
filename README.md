@@ -1,5 +1,4 @@
-# 🍊 Santero Island · A Love Mystery
-
+# 🍊 Santero Island
 A cozy visual novel mystery game for two. Investigate a disappearance, interrogate quirky island residents, solve puzzles, and uncover a romantic resolution.
 
 ![Game Screenshot](https://via.placeholder.com/780x460/fcf5c8/d9a066?text=Santero+Island+Mystery)
