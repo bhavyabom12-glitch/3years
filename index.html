@@ -98,7 +98,7 @@
             padding: 14px 16px;
             margin: 8px 0 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-            max-height: 340px;
+            max-height: 380px;
             overflow-y: auto;
         }
 
@@ -163,6 +163,51 @@
         .panel-content .page.active {
             display: block;
             animation: fadeSlide 0.25s ease;
+        }
+
+        .panel-content .page p {
+            margin-bottom: 8px;
+        }
+
+        .panel-content .page ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .panel-content .page ul li {
+            padding: 4px 0;
+            border-bottom: 1px solid #f5ede2;
+            font-size: 13px;
+        }
+
+        .panel-content .page ul li:last-child {
+            border-bottom: none;
+        }
+
+        .panel-content .page ul li strong {
+            color: #b58a6b;
+        }
+
+        .panel-content .page .tag {
+            display: inline-block;
+            background: #f0d5b0;
+            padding: 0 10px;
+            border-radius: 40px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #6b4f3a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .panel-content .page .tag.cleared {
+            background: #c8e6c8;
+            color: #2f7a2f;
+        }
+
+        .panel-content .page .tag.suspect {
+            background: #fde8e8;
+            color: #a54343;
         }
 
         .resident-item {
@@ -236,9 +281,26 @@
             align-items: flex-end;
             justify-content: flex-start;
             padding: 0 10px 10px 10px;
-            background: linear-gradient(180deg, rgba(212, 230, 245, 0.3) 0%, rgba(253, 232, 208, 0.2) 100%);
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.6s ease;
             border-radius: 32px 32px 0 0;
             margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .vn-stage::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 251, 240, 0.4);
+            backdrop-filter: blur(2px);
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 32px 32px 0 0;
         }
 
         .sprite-container {
@@ -250,6 +312,7 @@
             justify-content: center;
             margin-right: 10px;
             position: relative;
+            z-index: 2;
         }
 
         .sprite-container img {
@@ -269,7 +332,8 @@
         }
 
         .vn-dialogue {
-            background: #fffbf4;
+            background: rgba(255, 251, 240, 0.92);
+            backdrop-filter: blur(4px);
             border-radius: 28px;
             padding: 18px 22px 14px;
             border: 2px solid #f0d5b0;
@@ -279,6 +343,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
+            z-index: 3;
         }
 
         .speaker-name {
@@ -315,6 +381,26 @@
         }
         .dialogue-text p:last-child {
             margin-bottom: 0;
+        }
+
+        /* ─── VAN OVERLAY ─── */
+        .van-overlay {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            width: 140px;
+            height: auto;
+            z-index: 1;
+            opacity: 0.85;
+            display: none;
+            pointer-events: none;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.25));
+        }
+
+        .van-overlay img {
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated;
         }
 
         /* ─── PARENT MESSAGES ─── */
@@ -693,16 +779,6 @@
             transform: translateY(-2px);
         }
 
-        .physical-hint {
-            background: #f5ede2;
-            border-radius: 16px;
-            padding: 12px 16px;
-            margin: 12px 0 4px;
-            border: 2px solid #e6d3bc;
-            font-size: 14px;
-            text-align: center;
-        }
-
         /* ─── LETTER CONTENT ─── */
         .letter-content {
             background: #fffbf4;
@@ -825,6 +901,11 @@
                 font-size: 15px;
                 min-height: 50px;
             }
+            .van-overlay {
+                width: 80px;
+                bottom: 10px;
+                right: 10px;
+            }
             .word-grid {
                 max-width: 240px;
                 font-size: 14px;
@@ -925,6 +1006,11 @@
             }
             .dialogue-text {
                 font-size: 14px;
+            }
+            .van-overlay {
+                width: 60px;
+                bottom: 6px;
+                right: 6px;
             }
             .pixel-tree {
                 grid-template-columns: repeat(11, 14px);
@@ -1059,56 +1145,65 @@
             </h4>
             <div class="panel-content" id="caseFileContent">
                 <div class="page active" data-page="0">
+                    <p><strong>📋 CASE SUMMARY</strong></p>
                     <p><strong>Case:</strong> Disappearance of Sierra "Vanny" Santero<br />
                     <strong>Date:</strong> 07/06/23 · 4:27 PM<br />
                     <strong>Location:</strong> Santero Island<br />
                     <strong>Lead Detective:</strong> Tyler<br />
                     <strong>Field Agent:</strong> "B"</p>
-                    <p>Heiress to Santero Island, Sierra Santero, vanished en route to the private airstrip. Her belongings were found in a ditch — pink Crocs, cracked phone, and a satin ribbon with a cryptic message. Parents are cooperative but increasingly agitated.</p>
-                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">🔍 <em>Navigate pages for evidence, suspect profiles, and interview transcripts.</em></p>
+                    <p>Heiress to Santero Island, Sierra Santero, vanished en route to the private airstrip. Her belongings were found in a ditch — pink Crocs, cracked phone, and a satin ribbon with a cryptic message.</p>
+                    <p>The victim's parents are cooperative but increasingly agitated. Mr. Santero has been pressuring the investigation to stay on track, while Mrs. Santero has been sharing memories of her daughter.</p>
+                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">🔍 <em>Navigate the tabs above for evidence, suspect profiles, interview transcripts, and the final report.</em></p>
                 </div>
+
                 <div class="page" data-page="1">
-                    <p><strong>📦 Evidence Log</strong></p>
-                    <ul style="list-style:none; padding:0; font-size:14px;">
-                        <li>• <strong>#001</strong> — Pink Crocs (ditch)</li>
-                        <li>• <strong>#002</strong> — Cracked phone (last photo: footprint with owl feather + crescent moon)</li>
-                        <li>• <strong>#003</strong> — Satin ribbon (cryptic riddle → "pizza rolls")</li>
-                        <li>• <strong>#004</strong> — Glyph drawing (pointed to Western Ridge)</li>
-                        <li>• <strong>#005</strong> — Spotify playlist (hidden message: "Tyler, do you know? Missing girls are found by dinosaurs on empty beaches")</li>
-                        <li>• <strong>#006</strong> — Training ground weapons cache (key = 7 shurikens)</li>
-                        <li>• <strong>#007</strong> — Glitched note (unscrambled: "BALANCE")</li>
-                        <li>• <strong>#008</strong> — Shipping manifest (Heartwood Soil, Black Market Buyer, signed by Mr. Santero)</li>
+                    <p><strong>📦 EVIDENCE LOG</strong></p>
+                    <ul>
+                        <li><strong>#001</strong> — Pink Crocs (found in a ditch near the main road)</li>
+                        <li><strong>#002</strong> — Cracked phone (last photo: footprint with owl feather + crescent moon symbol)</li>
+                        <li><strong>#003</strong> — Satin blue ribbon (cryptic riddle: <em>"I'm not a sushi, nor a spring roll... What two‑word snack holds the next key?"</em> → "pizza rolls")</li>
+                        <li><strong>#004</strong> — Glyph drawing (found near the airstrip; points to Western Ridge)</li>
+                        <li><strong>#005</strong> — Spotify playlist (hidden message: <em>"Tyler, do you know? Missing girls are found by dinosaurs on empty beaches"</em>)</li>
+                        <li><strong>#006</strong> — Training ground weapons cache (key = 7 shurikens)</li>
+                        <li><strong>#007</strong> — Glitched note (unscrambled: "BALANCE")</li>
+                        <li><strong>#008</strong> — Shipping manifest (Heartwood Soil — 500kg — Destination: Black Market Buyer — Departure: 07/06/23 6:00 PM; signed by Mr. Santero)</li>
                     </ul>
+                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">📌 <em>All evidence has been catalogued and is admissible.</em></p>
                 </div>
+
                 <div class="page" data-page="2">
-                    <p><strong>👤 Suspect Profiles</strong></p>
-                    <ul style="list-style:none; padding:0; font-size:14px;">
-                        <li>• <strong>Luz & Amity</strong> — Eastern Bungalow. ✅ Cleared (alibi confirmed).</li>
-                        <li>• <strong>Soyona & Brooklynn</strong> — Western Ridge. ✅ Cleared (provided drone footage).</li>
-                        <li>• <strong>Naruto & Sasuke</strong> — Training Grounds. ✅ Cleared (provided password-locked evidence).</li>
-                        <li>• <strong>Jax & Ragatha</strong> — Digital Circus Tent. ✅ Cleared (provided glitched note).</li>
-                        <li>• <strong>Ellie & Abby</strong> — Airstrip Bungalow. ✅ Cleared (provided manifest).</li>
-                        <li style="margin-top:8px; border-top:1px dashed #f0d5b0; padding-top:8px;">• <strong>⚠️ Agent "B"</strong> — Only resident with a van (NYC-419). Under investigation.</li>
+                    <p><strong>👤 SUSPECT PROFILES</strong></p>
+                    <ul>
+                        <li><strong>Luz &amp; Amity</strong> — Eastern Bungalow. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Alibi confirmed — were at the Boiling Isles at the time of the abduction.</span></li>
+                        <li><strong>Soyona &amp; Brooklynn</strong> — Western Ridge. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Provided drone footage confirming the cargo ship at the private pier.</span></li>
+                        <li><strong>Naruto &amp; Sasuke</strong> — Training Grounds. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Provided password‑locked evidence from their training ground.</span></li>
+                        <li><strong>Jax &amp; Ragatha</strong> — Digital Circus Tent. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Provided the glitched note and overheard Gregor's conversation.</span></li>
+                        <li><strong>Ellie &amp; Abby</strong> — Airstrip Bungalow. <span class="tag cleared">✅ CLEARED</span><br /><span style="font-size:12px; color:#8f7a5f;">Found the shipping manifest in the van.</span></li>
+                        <li style="margin-top:8px; border-top:1px dashed #f0d5b0; padding-top:8px;"><strong>⚠️ Agent "B"</strong> — Island Liaison Office. <span class="tag suspect">🔴 UNDER INVESTIGATION</span><br /><span style="font-size:12px; color:#8f7a5f;">Only resident with a van (NYC‑419). Van was seen at multiple locations during the abduction.</span></li>
                     </ul>
                 </div>
+
                 <div class="page" data-page="3">
-                    <p><strong>📞 Interview Summaries</strong></p>
-                    <ul style="list-style:none; padding:0; font-size:14px;">
-                        <li>• <strong>Luz & Amity:</strong> Saw blue van (NYC-419) near airstrip. Found glyph pointing to Western Ridge.</li>
-                        <li>• <strong>Soyona & Brooklynn:</strong> Drone caught cargo ship "The Seraphina" at private pier. Saw Gregor heading to Training Grounds.</li>
-                        <li>• <strong>Naruto & Sasuke:</strong> Saw Gregor with BLACK MARKET folder. Password-locked evidence (key = 7 shurikens).</li>
-                        <li>• <strong>Jax & Ragatha:</strong> Overheard Gregor mention signed manifest and buyer meeting at Airstrip Bungalow.</li>
-                        <li>• <strong>Ellie & Abby:</strong> Found shipping manifest in van. Signed by Mr. Santero. Plate: NYC‑419.</li>
+                    <p><strong>📞 INTERVIEW SUMMARIES</strong></p>
+                    <ul>
+                        <li><strong>Luz &amp; Amity:</strong> Saw blue van (NYC‑419) near the airstrip at 4:45 PM. Found the glyph drawing pointing to Western Ridge. ✅ Cleared.</li>
+                        <li><strong>Soyona &amp; Brooklynn:</strong> Drone caught cargo ship "The Seraphina" at the private pier at 4:30 PM. Saw Gregor heading to the Training Grounds. ✅ Cleared.</li>
+                        <li><strong>Naruto &amp; Sasuke:</strong> Saw Gregor with a "BLACK MARKET" folder walking toward the Digital Circus Tent. Password‑locked evidence (key = 7 shurikens). ✅ Cleared.</li>
+                        <li><strong>Jax &amp; Ragatha:</strong> Overheard Gregor mention a signed manifest and a buyer meeting at the Airstrip Bungalow. Provided the glitched note. ✅ Cleared.</li>
+                        <li><strong>Ellie &amp; Abby:</strong> Found the shipping manifest inside Gregor's van. Signed by Mr. Santero. Plate: NYC‑419. ✅ Cleared.</li>
                     </ul>
+                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">📌 <em>All interviewed residents have been cleared of involvement in the abduction.</em></p>
                 </div>
+
                 <div class="page" data-page="4">
-                    <p><strong>📑 Final Report — CLASSIFIED</strong></p>
+                    <p><strong>📑 FINAL REPORT — CLASSIFIED</strong></p>
                     <p style="font-size:14px; color:#8f7a5f;"><em>Awaiting final confirmation from lead detective.</em></p>
                     <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">🔐 <em>This report will auto‑populate once the investigation is complete.</em></p>
                     <div id="finalReportContent" style="display:none; margin-top:10px; padding:12px; background:#f5ede2; border-radius:12px; border:2px solid #d9a066;">
                         <p><strong>✅ CASE SOLVED</strong></p>
                         <p>Sierra Santero faked her disappearance to expose her parents' Heartwood smuggling operation. Agent "B" (undercover) assisted her. The Santeros have been charged with illegal trafficking. Sierra is alive and safe.</p>
                         <p style="margin-top:6px; font-style:italic; color:#6b4f3a;">"The island is safe. And our Love Tree is protected." — Agent B</p>
+                        <p style="margin-top:6px; font-size:12px; color:#8f7a5f;"><strong>Case closed.</strong> All evidence has been submitted. The Santeros have agreed to a deal in exchange for leniency.</p>
                     </div>
                 </div>
             </div>
@@ -1116,7 +1211,12 @@
 
         <!-- ─── VISUAL NOVEL SCENE ─── -->
         <div class="vn-scene" id="vnScene">
-            <div class="vn-stage">
+            <div class="vn-stage" id="vnStage">
+                <!-- Van Overlay -->
+                <div class="van-overlay" id="vanOverlay">
+                    <img src="assets/van.png" alt="Van" />
+                </div>
+
                 <div class="sprite-container" id="spriteContainer">
                     <div class="sprite-placeholder">🌿</div>
                 </div>
@@ -1155,32 +1255,31 @@
 
             <div id="giftDisplay" style="display:none;"></div>
 
-            <div class="physical-hint">
-                <span style="font-size:28px; display:block;">❄️</span>
-                <strong>🍊 THE ORANGE — Physical Gift</strong><br />
-                <em>"I hid it where the cold sleeps."</em><br /><br />
-                <strong>Check the FREEZER.</strong> Behind the ice cream, a bag labelled <strong>"EVIDENCE #419 — LOVE FRUIT"</strong>.<br />
-                Inside is a real orange from our tree. Sweet, unbreakable, all yours.
-            </div>
-
             <button class="reset-btn" id="resetBtn">🔄 Play Again</button>
         </div>
     </div>
 
     <script>
         // ─── CONFIGURATION ───
-        // Fruit 0: Orange (physical), Fruit 1: Playlist, Fruit 2: Poem (Special Letter), Fruit 3-6: Links
         const FRUIT_URLS = [
-            '#', // Fruit 1 – physical gift (non-clickable)
-            'https://open.spotify.com/playlist/29cQ44SAYywcLLoiqgsIBZ', // Fruit 2 – gift playlist
-            '#', // Fruit 3 – Poem (handled internally)
-            'https://example.com/photos', // Fruit 4 – photo collage
-            'https://example.com/coupons', // Fruit 5 – coupons
-            'https://example.com/confession', // Fruit 6 – confession
-            'https://example.com/drawing.png' // Fruit 7 – drawing
+            '#',
+            'https://open.spotify.com/playlist/29cQ44SAYywcLLoiqgsIBZ',
+            '#',
+            'https://example.com/photos',
+            'https://example.com/coupons',
+            'https://example.com/confession',
+            'https://example.com/drawing.png'
         ];
 
         const SPRITE_PATH = 'assets/sprites/';
+
+        // ─── BACKGROUND CONFIGURATION ───
+        const BACKGROUNDS = [
+            'assets/backgrounds/background1.jpg',
+            'assets/backgrounds/background2.jpg',
+            'assets/backgrounds/background3.jpg'
+        ];
+        let bgIndex = 0;
 
         // ─── RESIDENT DATA ───
         const residents = [{
@@ -1188,91 +1287,81 @@
             name: 'Luz Noceda & Amity Blight',
             location: 'Eastern Bungalow',
             vehicle: 'Matching Mopeds',
-            details: 'These adorable highschool sweethearts are inseparable. They really do bring a special sort of magic to the tropical island-- literally. Watch out for scattered glyphs!'
+            details: 'Owl House fans. Known for glyph magic and Azura books.'
         }, {
             id: 'soyona_brooklynn',
             name: 'Soyona Santos & Brooklynn',
             location: 'Western Ridge',
             vehicle: 'ATV "Raptor"',
-            details: 'Savvy, charming, and clever dinosaur trackers. Their ingenius use of drones for thermal imaging has made them pioneers in their niche, and their cat-and-mouse dynamic will keep you on your toes.'
+            details: 'Dinosaur trackers. Use drones for thermal imaging.'
         }, {
             id: 'naruto_sasuke',
             name: 'Naruto Uzumaki & Sasuke Uchiha',
             location: 'Training Grounds',
             vehicle: 'Red Sports Car',
-            details: 'Two dedicated ninjas-in-training with honor and care practically coded in their DNA. Their energy might be captivating, but protect your head near their training grounds...'
+            details: 'Ninja training. Known for shuriken and jutsu.'
         }, {
             id: 'jax_ragatha',
             name: 'Jax & Ragatha',
             location: 'Digital Circus Tent',
             vehicle: 'Vintage Convertible',
-            details: 'These two are the elusive coupled performers of some sort of digital circus. The words most often used to describe them are abstract and glitchy, but no one can deny their chemistry...'
+            details: 'Digital circus performers. Abstract and glitchy.'
         }, {
             id: 'ellie_abby',
             name: 'Ellie Williams & Abby Anderson',
             location: 'Airstrip Bungalow',
             vehicle: 'Jeep Wrangler',
-            details: 'Toughened survivors with hearts of gold. Say what you want about them, but they know how to create a home in the worst place-- and, more relevantly, their way around a conspiracy.'
+            details: 'Survivors. Know their way around a conspiracy.'
         }, {
             id: 'agent_b',
             name: 'Agent "B"',
             location: 'Island Liaison Office',
             vehicle: '🚐 Blue Cargo Van — NYC-419',
-            details: 'A mysterious (and smart, and sexy, and funny, and gracious-- but I digress...) operative who/s been on the island for a month by now. This is your very own field agent.'
+            details: 'Undercover investigator. Has been on the island for months.'
         }];
 
         // ─── DIALOGUE DATA ───
         const dialogue = [{
-            // 0: Opening — Agent B introduction
             speaker: '🕵️ Agent B',
-            text: 'Detective Tyler. I\'m Agent B. I\'ve been assigned to this case. The Santero girl vanished at 4:27 PM from the main road. Her parents are... well. You/ll hear from them soon enough.',
+            text: 'Detective Tyler. I\'m Agent B. I\'ve been assigned to this case. The Santero girl vanished at 4:27 PM from the main road. Her parents are... well, they\'re putting on a show.',
             sprite: 'agent_b'
         }, {
-            // 1: Parent message — polite
             speaker: '📩 Mr. Santero',
             text: 'Please, Detective. Find our daughter. We\'ll cooperate fully. Just... bring her home.',
             sprite: null,
             parentMessage: { sender: 'Mr. Santero', text: 'Please, Detective. Find our daughter. We\'ll cooperate fully. Just... bring her home.', aggressive: false }
         }, {
-            // 2: Crime scene briefing
             speaker: '🔍 Forensics',
             text: 'Sierra\'s phone was found in a ditch near the Eastern Bungalow. The last photo shows a footprint in the mud — an owl feather and a crescent moon symbol. That\'s a distinct calling card.',
             sprite: null
         }, {
-            // 3: Puzzle — footprint
             speaker: '🕵️ Agent B',
             text: 'That footprint belongs to someone specific. Enter their names below to confirm.',
             sprite: 'agent_b',
             puzzle: 'footprint'
         }, {
-            // 4: Luz & Amity cleared
             speaker: '🦉 Luz Noceda',
             text: 'Oh my gosh, a detective! This is so cool! Okay, okay, so we were at the Boiling Isles at 4:27 PM. I have photos! Eda took them. We were literally eating dinner. But listen — when we flew back over the island, we saw a blue van near the airstrip. It had a plate that said NYC‑419. That\'s not a local plate, right?',
             sprite: 'luz'
         }, {
-            // 5: Amity with glyph
             speaker: '📝 Amity Blight',
             text: 'Luz, let them speak. But she\'s right. We also found a weird drawing near the airstrip. It had this glyph on it... it looked like a dinosaur skeleton? Or maybe a raptor? I don\'t know, but it pointed toward the Western Ridge.',
             sprite: 'amity'
         }, {
-            // 6: Agent B reviews — prompts Spotify puzzle
             speaker: '🕵️ Agent B',
             text: 'A glyph pointing to the Western Ridge... that\'s where Soyona and Brooklynn live. They drive an ATV called the Raptor. But before we go there, I found something else. A Spotify playlist left near the airstrip. It might have a hidden message. See if you can decode it.',
             sprite: 'agent_b',
             puzzle: 'spotify'
         }, {
-            // 7: Parent message — impatient
             speaker: '📩 Mr. Santero',
             text: 'Detective. I hope you\'re not wasting time on dead ends. Focus on finding my daughter. Not on digging up dirt.',
             sprite: null,
             parentMessage: { sender: 'Mr. Santero', text: 'Detective. I hope you\'re not wasting time on dead ends. Focus on finding my daughter. Not on digging up dirt.', aggressive: true }
         }, {
-            // 8: Agent B reveals decoded message
             speaker: '🕵️ Agent B',
-            text: 'So the hidden message is... "Tyler, do you know? Missing girls are found by dinosaurs on empty beaches." Creepy... this psycho is addressing you directly! But what do dinosaurs have to do with this??',
+            text: 'So the hidden message is... "Tyler, do you know? Missing girls are found by dinosaurs on empty beaches." Creepy... they\'re addressing you specifically! But what do dinosaurs have to do with this??',
             sprite: 'agent_b'
         }, {
-            // 9: Choice — who to interrogate?
             speaker: '🕵️ Agent B',
             text: 'Well, Detective? The glyph pointed to the Western Ridge. And the message mentions dinosaurs. Who do you think we should talk to?',
             sprite: 'agent_b',
@@ -1284,22 +1373,18 @@
                 { text: '🎸 Ellie & Abby — Airstrip Bungalow', nextIndex: 10, correct: false }
             ]
         }, {
-            // 10: Wrong choice response
             speaker: '❌ Wrong Choice',
             text: 'The couple looks at you confused. "Why the visit? This evidence doesn\'t even point to us!!" Try again.',
             sprite: null
         }, {
-            // 11: Soyona & Brooklynn — correct
             speaker: '🦖 Soyona Santos',
             text: 'We were tracking thermal signatures in the jungle at 4:30 PM. Our drone caught a cargo ship docking at the private pier. That\'s weird because the tide was too low for any normal shipping. The ship was called "The Seraphina."',
             sprite: 'soyona'
         }, {
-            // 12: Brooklynn
             speaker: '📡 Brooklynn',
             text: 'We also saw a man taking photos near the pier. We recognized him — it was Gregor, Mr. Santero\'s assistant. He seemed really nervous. He walked toward the Training Grounds after that.',
             sprite: 'brooklynn'
         }, {
-            // 13: Agent B review — prompts choice
             speaker: '🕵️ Agent B',
             text: 'The Training Grounds... who do you think would\'ve seen something there?',
             sprite: 'agent_b',
@@ -1311,108 +1396,89 @@
                 { text: '🎸 Ellie & Abby — Airstrip Bungalow', nextIndex: 14, correct: false }
             ]
         }, {
-            // 14: Wrong choice response
             speaker: '❌ Wrong Choice',
             text: 'The couple shrugs. "We didn\'t see anything. Why would we? We don\'t even live near the Training Grounds." Try again.',
             sprite: null
         }, {
-            // 15: Naruto & Sasuke
             speaker: '🍥 Naruto Uzumaki',
             text: 'Believe it! We were training and we saw Gregor walk by with a folder that said BLACK MARKET on it. He looked really suspicious. He went toward the Digital Circus Tent.',
             sprite: 'naruto'
         }, {
-            // 16: Sasuke with shuriken puzzle
             speaker: '⚔️ Sasuke Uchiha',
             text: 'We recorded the weird behavior then itself, but kept it password-locked on-site so the wrong person couldn\'t access it. The key should be the amount of one type of the weapons we left there.. Naruto.. do you remember?',
             sprite: 'sasuke'
         }, {
-            // 17: Naruto response
             speaker: '🍥 Naruto Uzumaki',
             text: 'Oh no! I don\'t!! All I remember was that you can\'t really use it in close combat..',
             sprite: 'naruto'
         }, {
-            // 18: Puzzle — shuriken count
             speaker: '⚔️ Sasuke Uchiha',
-            text: 'There are four swords, eight kunai, and some shurikens. We could count each type-- but which one is the key?',
+            text: 'there\'s shurikens, kunai, and swords here, and they\'re all countable. but what should we count?',
             sprite: 'sasuke',
             puzzle: 'shuriken'
         }, {
-            // 19: Jax & Ragatha
             speaker: '🎪 Jax',
             text: 'Oh, the folder guy? Yeah, he came by. He was muttering about a signed manifest and a buyer. He said the buyer was meeting him at the Airstrip Bungalow. That\'s Ellie and Abby\'s place.',
             sprite: 'jax'
         }, {
-            // 20: Ragatha with glitch puzzle
             speaker: '🎀 Ragatha',
             text: 'He dropped this piece of paper. It\'s all scrambled. I think it\'s some kind of code. Maybe you can make sense of it?',
             sprite: 'ragatha',
             puzzle: 'glitch'
         }, {
-            // 21: Parent message — Mrs. Santero memory
             speaker: '📩 Mrs. Santero',
             text: 'She always loved books... she\'d stay up all night reading. Please hurry, Detective.',
             sprite: null,
             parentMessage: { sender: 'Mrs. Santero', text: 'She always loved books... she\'d stay up all night reading. Please hurry, Detective.', aggressive: false }
         }, {
-            // 22: Ellie & Abby
             speaker: '🎸 Ellie Williams',
             text: 'Yeah, Gregor came by. He was stressed. Told us to stay inside and not mention the ship to anyone. That\'s a red flag if I\'ve ever seen one.',
             sprite: 'ellie'
         }, {
-            // 23: Abby — van plate puzzle
             speaker: '🏹 Abby Anderson',
             text: 'We looked inside his van. Found a shipping manifest. It said "Heartwood Soil – 500kg – Destination: Black Market Buyer – Departure: 07/06/23 6:00 PM." It was signed by Mr. Santero. The van\'s plate was NYC‑419.',
             sprite: 'abby',
             puzzle: 'vanplate'
         }, {
-            // 24: Parent message — Mrs. Santero memory 2
             speaker: '📩 Mrs. Santero',
             text: 'She never knew when to stop snooping around.. she always had to know everything. That\'s what got her into this mess.',
             sprite: null,
             parentMessage: { sender: 'Mrs. Santero', text: 'She never knew when to stop snooping around.. she always had to know everything. That\'s what got her into this mess.', aggressive: false }
         }, {
-            // 25: Parent message — aggressive Mr. Santero
             speaker: '📩 Mr. Santero',
             text: 'I\'ve had enough of this. You\'re supposed to be finding my daughter, not interrogating every resident on the island. Stop wasting time.',
             sprite: null,
             parentMessage: { sender: 'Mr. Santero', text: 'I\'ve had enough of this. You\'re supposed to be finding my daughter, not interrogating every resident on the island. Stop wasting time.', aggressive: true }
         }, {
-            // 26: Parent message — Mrs. Santero with Vanny clue
             speaker: '📩 Mrs. Santero',
             text: 'Everyone loved her silliness and passion... the common folk even gave her the inane nickname "Vanny" because she was so fixated on the only vehicle that isn\'t allowed on the island!! Even though it\'s only for environmental reasons, she always used to say she\'d only go off on her own as an independent person in a van someday..',
             sprite: null,
             parentMessage: { sender: 'Mrs. Santero', text: 'Everyone loved her silliness and passion... the common folk even gave her the inane nickname "Vanny" because she was so fixated on the only vehicle that isn\'t allowed on the island!! Even though it\'s only for environmental reasons, she always used to say she\'d only go off on her own as an independent person in a van someday..',
                 aggressive: false }
         }, {
-            // 27: Internal dialogue — van realization
             speaker: '🧠 Detective\'s Thoughts',
             text: 'Wait... a van... and no one here has a van except for...',
             sprite: null
         }, {
-            // 28: Internal dialogue — check resident list
             speaker: '🧠 Detective\'s Thoughts',
             text: 'I should check the resident list. There\'s a "More Info" button for each resident. I need to see who has a van.',
             sprite: null
         }, {
-            // 29: Agent B reveal (finale)
             speaker: '🕵️ Agent B',
             text: 'NYC‑419. That\'s my van. I know how that looks. But I\'m not the bad guy here, Tyler. I\'ve been undercover for months. Sierra came to me with the evidence. I helped her disappear so we could build a case without her parents silencing her.',
-            sprite: 'agent_b'
+            sprite: 'agent_b2'
         }, {
-            // 30: Sierra
             speaker: '👧 Sierra "Vanny" Santero',
             text: 'Detective! I\'m so sorry for all the drama. But my parents were going to sell the island\'s Heartwood to black market buyers. They\'re destroying the Love Trees. I found the documents and they called me crazy. So I ran. Agent B helped me. She\'s not a suspect. She\'s a hero.',
             sprite: 'sierra'
         }, {
-            // 31: Agent B final
             speaker: '🕵️ Agent B',
             text: 'With the drone footage, the shipping manifests, the signatures, and the testimonies from the residents, we have enough to shut down the entire operation. The Santeros have agreed to a deal. The island is safe. And our Love Tree is protected.',
-            sprite: 'agent_b'
+            sprite: 'agent_b2'
         }, {
-            // 32: Agent B tree reveal
             speaker: '🕵️ Agent B',
-            text: 'Our tree bore 7 fruits this year. Each one is a gift for you. Click them on the tree to open your Anniversary Gifts. And Tyler... I hid something special in the freezer for you. An orange from our tree. I\'ll let you find it.',
-            sprite: 'agent_b'
+            text: 'Our tree bore 7 fruits this year. Each one is a gift for you. Click them on the tree to open your Anniversary Gifts. And Tyler... I hope you love them as much as I love you.',
+            sprite: 'agent_b3'
         }];
 
         // ─── PUZZLE SOLUTIONS ───
@@ -1427,13 +1493,14 @@
         // ─── STATE ───
         let currentDialogueIndex = 0;
         let puzzleSolved = {};
-        let choicesTaken = {};
         let fruitsPlucked = {};
         let residentPanelOpen = false;
         let caseFileOpen = false;
 
         const vnScene = document.getElementById('vnScene');
         const treeFinale = document.getElementById('treeFinale');
+        const vnStage = document.getElementById('vnStage');
+        const vanOverlay = document.getElementById('vanOverlay');
         const spriteContainer = document.getElementById('spriteContainer');
         const speakerName = document.getElementById('speakerName');
         const dialogueText = document.getElementById('dialogueText');
@@ -1449,6 +1516,21 @@
         const caseFilePages = document.querySelectorAll('.page');
         const pageNavButtons = document.querySelectorAll('.page-nav button');
         const finalReportContent = document.getElementById('finalReportContent');
+
+        // ─── BACKGROUND FUNCTIONS ───
+        function cycleBackground() {
+            vnStage.style.backgroundImage = `url('${BACKGROUNDS[bgIndex]}')`;
+            bgIndex = (bgIndex + 1) % BACKGROUNDS.length;
+        }
+
+        // ─── VAN OVERLAY FUNCTIONS ───
+        function showVan() {
+            vanOverlay.style.display = 'block';
+        }
+
+        function hideVan() {
+            vanOverlay.style.display = 'none';
+        }
 
         // ─── BUILD RESIDENT LIST ───
         function buildResidentList() {
@@ -1503,7 +1585,7 @@
             });
         }
 
-        // ─── TOGGLE RESIDENT LIST ───
+        // ─── TOGGLES ───
         residentToggleBtn.addEventListener('click', function() {
             residentPanelOpen = !residentPanelOpen;
             residentPanel.classList.toggle('open', residentPanelOpen);
@@ -1515,7 +1597,6 @@
             }
         });
 
-        // ─── TOGGLE CASE FILE ───
         caseFileToggleBtn.addEventListener('click', function() {
             caseFileOpen = !caseFileOpen;
             caseFilePanel.classList.toggle('open', caseFileOpen);
@@ -1537,7 +1618,7 @@
             });
         });
 
-        // ─── AUTO-POPULATE FINAL REPORT ───
+        // ─── FINAL REPORT ───
         function updateFinalReport() {
             const allSolved = Object.keys(solutions).every(k => puzzleSolved[k]);
             if (allSolved || currentDialogueIndex >= dialogue.length - 1) {
@@ -1555,14 +1636,17 @@
                 spriteContainer.appendChild(placeholder);
                 return;
             }
+
             const img = document.createElement('img');
-            img.src = SPRITE_PATH + spriteId + '.png';
+            img.src = SPRITE_PATH + spriteId + '-removebg-preview.png';
             img.alt = spriteId;
             img.onerror = function() {
                 const fallback = document.createElement('div');
                 fallback.className = 'sprite-placeholder';
                 const emojis = {
                     agent_b: '🕵️',
+                    agent_b2: '🕵️‍♀️',
+                    agent_b3: '🥰',
                     sierra: '👧',
                     luz: '🦉',
                     amity: '📝',
@@ -1601,10 +1685,26 @@
             ['⬡', '⭐', '⬡', '⬡', '⭐']
         ];
 
+        // ─── INTERVIEW TRIGGER INDICES ───
+        const INTERVIEW_INDICES = [4, 11, 15, 19, 22, 29];
+
         // ─── RENDER DIALOGUE ───
         function renderDialogue(index) {
             const entry = dialogue[index];
             if (!entry) return;
+
+            // ─── Cycle background on new interview ───
+            if (INTERVIEW_INDICES.includes(index)) {
+                cycleBackground();
+            }
+
+            // ─── Show/hide van overlay ───
+            // Show during van confrontation (indices 29, 30, 31)
+            if (index >= 29 && index <= 31) {
+                showVan();
+            } else {
+                hideVan();
+            }
 
             speakerName.innerHTML = entry.speaker;
 
@@ -1824,6 +1924,7 @@
                 buildPixelTree();
                 buildFruitLinks();
                 finalReportContent.style.display = 'block';
+                hideVan();
                 return;
             }
 
@@ -1916,7 +2017,7 @@
         function buildFruitLinks() {
             const container = document.getElementById('fruitLinksContainer');
             container.innerHTML = '';
-            const fruitEmojis = ['🍊', '🍊', '🍋', '🍊', '🍊', '🍋', '🍋'];
+            const fruitEmojis = ['🍊', '🍎', '🍇', '🍉', '🍑', '🍒', '🥝'];
             const fruitLabels = ['Gift 1', 'Gift 2', 'Gift 3', 'Gift 4', 'Gift 5', 'Gift 6', 'Gift 7'];
 
             for (let i = 0; i < 7; i++) {
@@ -2048,8 +2149,8 @@
             if (index === 0) {
                 display.innerHTML = `
                             <span class="gift-emoji">🍊</span>
-                            <strong>THE ORANGE — Physical Gift</strong>
-                            <p>Check the freezer! Behind the ice cream, a bag labelled "EVIDENCE #419 — LOVE FRUIT". Inside is a real orange from our tree. Sweet, unbreakable, all yours.</p>
+                            <strong>A Sweet Memory</strong>
+                            <p>This orange represents the sweetness we share. Every moment with you is like sunshine on a quiet morning. Keep this memory close to your heart.</p>
                         `;
                 display.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 if (Object.keys(fruitsPlucked).length === 7) {
@@ -2067,7 +2168,7 @@
                 return;
             }
 
-            const fruitNames = ['Playlist', 'Poem', 'will come back!!', 'this too', 'this three :(', 'Drawing which is also in thr works'];
+            const fruitNames = ['', 'Playlist', 'Photo Collage', 'Coupons', 'Confession', 'Drawing'];
             const fruitEmojis = ['', '🎵', '📸', '🎫', '💖', '🎨'];
             const label = fruitNames[index] || 'Gift';
             const emoji = fruitEmojis[index] || '🎁';
@@ -2085,8 +2186,8 @@
                             <p style="text-align:center; font-size:18px; font-weight:700; color:#d9a066;">
                                 🎆 ALL 7 GIFTS HARVESTED! 🎆<br />
                                 <span style="font-size:14px; font-weight:400; color:#8f7a5f;">
-                                    You solved the case! I knew you would :) <br />
-                                    <strong>Happy Anniversary, Ty. <3 </strong>
+                                    You solved the case. You saved the island. You saved my heart.<br />
+                                    <strong>Happy Anniversary, Detective. 🖤</strong>
                                 </span>
                             </p>
                         `;
@@ -2098,10 +2199,18 @@
 
         // ─── INIT ───
         buildResidentList();
+
+        // Set initial background
+        vnStage.style.backgroundImage = `url('${BACKGROUNDS[0]}')`;
+        bgIndex = 1; // next cycle will go to background2
+
         renderDialogue(0);
         console.log('🌴 Santero Island mystery loaded. Good luck, Detective!');
         console.log('📂 Case File: cf070623.carrd.co');
         console.log('💌 Fruit 3 contains a special letter.');
+        console.log('🕵️ Agent B sprites: agent_b (normal), agent_b2 (van explanation), agent_b3 (blushing)');
+        console.log('🖼️ Backgrounds cycle on new interviews.');
+        console.log('🚐 Van appears during the confrontation.');
     </script>
 </body>
 </html>
