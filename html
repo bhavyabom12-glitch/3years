@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>🍊 Santero Island · A Love Mystery</title>
+    <style>
+        /* ─── RESET & BASE ─── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #fcf5c8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            background-image: radial-gradient(circle at 20% 30%, #fde8d0 0%, #fcf5c8 60%, #d4e6f5 100%);
+        }
+
+        .game-container {
+            max-width: 780px;
+            width: 100%;
+            background: rgba(255, 251, 240, 0.88);
+            backdrop-filter: blur(4px);
+            border-radius: 48px 48px 32px 32px;
+            padding: 24px 20px 20px;
+            box-shadow: 0 20px 60px rgba(180, 130, 80, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            border: 2px solid #f0d5b0;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .case-badge {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: #b58a6b;
+            border-bottom: 2px dashed #f0d5b0;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .case-badge .status {
+            background: #d9a066;
+            color: #fff6ea;
+            padding: 2px 16px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .badge-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge-btn {
+            background: #f0d5b0;
+            border: none;
+            border-radius: 40px;
+            padding: 4px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #6b4f3a;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 2px 0 #dbbd9a;
+            transition: 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 0px 0 #dbbd9a;
+        }
+
+        /* ─── PANELS ─── */
+        .panel {
+            display: none;
+            background: #fffbf4;
+            border: 2px solid #f0d5b0;
+            border-radius: 20px;
+            padding: 14px 16px;
+            margin: 8px 0 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            max-height: 340px;
+            overflow-y: auto;
+        }
+
+        .panel.open {
+            display: block;
+            animation: fadeSlide 0.3s ease;
+        }
+
+        .panel h4 {
+            font-size: 13px;
+            color: #6b4f3a;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #f0d5b0;
+            padding-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .panel h4 .page-nav {
+            display: flex;
+            gap: 6px;
+            font-size: 11px;
+            flex-wrap: wrap;
+        }
+
+        .panel h4 .page-nav button {
+            background: #f0d5b0;
+            border: none;
+            border-radius: 40px;
+            padding: 2px 12px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #6b4f3a;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: 0.15s;
+        }
+
+        .panel h4 .page-nav button:hover {
+            background: #d9a066;
+            color: #fff6ea;
+        }
+
+        .panel h4 .page-nav button.active-page {
+            background: #d9a066;
+            color: #fff6ea;
+        }
+
+        .panel-content {
+            font-size: 14px;
+            color: #3d3527;
+            line-height: 1.6;
+        }
+
+        .panel-content .page {
+            display: none;
+        }
+
+        .panel-content .page.active {
+            display: block;
+            animation: fadeSlide 0.25s ease;
+        }
+
+        .resident-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            border-bottom: 1px solid #f5ede2;
+            font-size: 14px;
+            color: #3d3527;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .resident-item:last-child {
+            border-bottom: none;
+        }
+
+        .resident-item .van-badge {
+            background: #d9a066;
+            color: #fff6ea;
+            padding: 0 10px;
+            border-radius: 40px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .resident-item .more-info-btn {
+            background: none;
+            border: 1px solid #e6d3bc;
+            border-radius: 40px;
+            padding: 0 12px;
+            font-size: 11px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            color: #6b4f3a;
+            transition: 0.15s;
+        }
+
+        .resident-item .more-info-btn:hover {
+            background: #f0d5b0;
+        }
+
+        .resident-detail {
+            display: none;
+            font-size: 12px;
+            color: #8f7a5f;
+            padding: 4px 8px;
+            background: #fcf7f0;
+            border-radius: 8px;
+            margin-top: 4px;
+            width: 100%;
+        }
+
+        .resident-detail.show {
+            display: block;
+        }
+
+        /* ─── VN LAYOUT ─── */
+        .vn-scene {
+            display: flex;
+            flex-direction: column;
+            min-height: 460px;
+        }
+
+        .vn-stage {
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding: 0 10px 10px 10px;
+            background: linear-gradient(180deg, rgba(212, 230, 245, 0.3) 0%, rgba(253, 232, 208, 0.2) 100%);
+            border-radius: 32px 32px 0 0;
+            margin-bottom: 8px;
+        }
+
+        .sprite-container {
+            flex-shrink: 0;
+            width: 140px;
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-right: 10px;
+            position: relative;
+        }
+
+        .sprite-container img {
+            max-width: 100%;
+            max-height: 180px;
+            object-fit: contain;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.08));
+            transition: all 0.3s ease;
+        }
+
+        .sprite-placeholder {
+            font-size: 80px;
+            line-height: 1;
+            opacity: 0.7;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.05));
+        }
+
+        .vn-dialogue {
+            background: #fffbf4;
+            border-radius: 28px;
+            padding: 18px 22px 14px;
+            border: 2px solid #f0d5b0;
+            box-shadow: 0 4px 0 #dbbd9a, inset 0 1px 0 #fffefc;
+            flex: 1;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .speaker-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: #b58a6b;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .speaker-name .badge {
+            background: #f0d5b0;
+            padding: 0 12px;
+            border-radius: 40px;
+            font-size: 10px;
+            color: #6b4f3a;
+            text-transform: uppercase;
+        }
+
+        .dialogue-text {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #3d3527;
+            flex: 1;
+            min-height: 60px;
+            margin-bottom: 6px;
+        }
+        .dialogue-text p {
+            margin-bottom: 8px;
+        }
+        .dialogue-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ─── PARENT MESSAGES ─── */
+        .parent-message {
+            background: #f5ede2;
+            border-left: 4px solid #b58a6b;
+            padding: 8px 14px;
+            border-radius: 12px;
+            margin: 6px 0;
+            font-size: 14px;
+            color: #6b4f3a;
+            font-style: italic;
+        }
+
+        .parent-message .sender {
+            font-weight: 700;
+            font-style: normal;
+            color: #8f6e55;
+        }
+
+        .parent-message.aggressive {
+            border-left-color: #d94f4f;
+            background: #fde8e8;
+        }
+
+        /* ─── CHOICE BUTTONS ─── */
+        .choice-area {
+            margin: 8px 0 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .choice-btn {
+            background: #fffbf4;
+            border: 2px solid #f0d5b0;
+            border-radius: 40px;
+            padding: 10px 18px;
+            font-size: 15px;
+            font-family: 'Courier New', monospace;
+            color: #3d3527;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: left;
+            box-shadow: 0 2px 0 #dbbd9a;
+            font-weight: 600;
+        }
+
+        .choice-btn:hover {
+            background: #fcf5c8;
+            border-color: #d9a066;
+            transform: scale(1.01);
+        }
+
+        .choice-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 0px 0 #dbbd9a;
+        }
+
+        .choice-btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* ─── PUZZLE AREA ─── */
+        .puzzle-area {
+            margin: 8px 0 4px;
+            padding: 12px 14px;
+            background: #fcf7f0;
+            border-radius: 20px;
+            border: 2px dashed #f0d5b0;
+        }
+
+        .puzzle-area label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b4f3a;
+            margin-bottom: 6px;
+        }
+
+        .puzzle-input-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .puzzle-input-row input {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 16px;
+            border: 2px solid #e6d3bc;
+            border-radius: 40px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            background: #fffcf4;
+            color: #2f2a1f;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .puzzle-input-row input:focus {
+            border-color: #d9a066;
+            box-shadow: 0 0 0 3px rgba(217, 160, 102, 0.2);
+        }
+
+        .puzzle-input-row button {
+            padding: 10px 24px;
+            background: #d9a066;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 15px;
+            color: #2f2a1f;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 4px 0 #b8834a;
+        }
+
+        .puzzle-input-row button:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #b8834a;
+        }
+        .puzzle-input-row button:disabled {
+            opacity: 0.5;
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #b8834a;
+            pointer-events: none;
+        }
+
+        .puzzle-feedback {
+            font-size: 14px;
+            margin-top: 8px;
+            padding: 6px 14px;
+            border-radius: 40px;
+            display: none;
+            font-weight: 600;
+        }
+        .puzzle-feedback.error {
+            display: block;
+            background: #fce4e4;
+            color: #a54343;
+            border: 1px solid #f5c2c2;
+        }
+        .puzzle-feedback.success {
+            display: block;
+            background: #e4f5e4;
+            color: #2f7a2f;
+            border: 1px solid #b8d9b8;
+        }
+
+        /* ─── WORD SEARCH ─── */
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            max-width: 300px;
+            margin: 8px auto;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            background: #f5ede2;
+            padding: 10px;
+            border-radius: 16px;
+            border: 2px solid #e6d3bc;
+        }
+        .word-grid .cell {
+            background: #fffcf4;
+            border-radius: 8px;
+            padding: 6px 0;
+            text-align: center;
+            color: #3d3527;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+            font-size: 16px;
+        }
+        .word-grid .cell.found {
+            background: #f0d5b0;
+            color: #3d3527;
+        }
+        .word-hint {
+            font-size: 12px;
+            color: #8f7a5f;
+            text-align: center;
+            margin: 4px 0 8px;
+        }
+
+        /* ─── SHURIKEN GRID ─── */
+        .shuriken-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            max-width: 220px;
+            margin: 8px auto;
+            padding: 10px;
+            background: #f5ede2;
+            border-radius: 16px;
+            border: 2px solid #e6d3bc;
+        }
+        .shuriken-grid .cell {
+            background: #fffcf4;
+            border-radius: 10px;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 24px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .glitch-display {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 6px;
+            background: #2f2a1f;
+            color: #f0d5b0;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 8px 0;
+            font-family: 'Courier New', monospace;
+            border: 3px dashed #d9a066;
+        }
+
+        /* ─── CONTROLS ─── */
+        .vn-controls {
+            margin-top: 12px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .vn-controls .next-btn {
+            background: #d9a066;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 28px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #2f2a1f;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 5px 0 #b8834a;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vn-controls .next-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #b8834a;
+        }
+        .vn-controls .next-btn:disabled {
+            opacity: 0.4;
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #b8834a;
+            pointer-events: none;
+        }
+
+        /* ─── TREE FINALE ─── */
+        .tree-finale {
+            display: none;
+            animation: fadeSlide 0.6s ease;
+        }
+        .tree-finale.active {
+            display: block;
+        }
+
+        .fireworks {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: 36px;
+            margin: 6px 0 10px;
+            letter-spacing: 12px;
+            opacity: 0.9;
+        }
+
+        .pixel-tree-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 12px 0;
+        }
+
+        .pixel-tree {
+            display: grid;
+            grid-template-columns: repeat(11, 24px);
+            grid-template-rows: repeat(13, 24px);
+            gap: 2px;
+            background: #fcf5c8;
+            padding: 8px;
+            border-radius: 16px;
+            border: 2px solid #f0d5b0;
+            image-rendering: pixelated;
+        }
+
+        .pixel-tree .cell {
+            width: 24px;
+            height: 24px;
+            border-radius: 2px;
+        }
+
+        .tree-trunk {
+            background: #8b6b4d;
+        }
+        .tree-bark {
+            background: #a8835e;
+        }
+        .tree-leaf {
+            background: #7d9c5e;
+        }
+        .tree-leaf-light {
+            background: #a8c686;
+        }
+        .tree-leaf-dark {
+            background: #5a7a40;
+        }
+
+        .fruit-orange {
+            background: #f5a623;
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(245, 166, 35, 0.5);
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid #e08a1a;
+        }
+        .fruit-orange:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 12px rgba(245, 166, 35, 0.8);
+        }
+        .fruit-orange.plucked {
+            background: #c4a882;
+            box-shadow: none;
+            cursor: default;
+            transform: scale(0.9);
+            border-color: #a8835e;
+            opacity: 0.5;
+        }
+
+        .fruit-grid-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 12px 0 8px;
+        }
+
+        .fruit-link-btn {
+            background: #fffbf4;
+            border: 2px solid #f0d5b0;
+            border-radius: 40px;
+            padding: 6px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #3d3527;
+            text-decoration: none;
+            transition: 0.2s;
+            box-shadow: 0 2px 0 #dbbd9a;
+            font-family: 'Courier New', monospace;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .fruit-link-btn.plucked {
+            opacity: 0.4;
+            text-decoration: line-through;
+            pointer-events: none;
+        }
+
+        .fruit-link-btn:hover:not(.plucked) {
+            background: #fcf5c8;
+            border-color: #d9a066;
+            transform: translateY(-2px);
+        }
+
+        .physical-hint {
+            background: #f5ede2;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin: 12px 0 4px;
+            border: 2px solid #e6d3bc;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* ─── LETTER CONTENT ─── */
+        .letter-content {
+            background: #fffbf4;
+            border: 2px solid #f0d5b0;
+            border-radius: 20px;
+            padding: 20px 24px;
+            margin: 12px 0 8px;
+            box-shadow: 0 4px 20px rgba(180, 130, 80, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .letter-content::before {
+            content: '💌';
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            font-size: 28px;
+            opacity: 0.2;
+        }
+
+        .letter-content .letter-title {
+            font-family: 'Georgia', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #b58a6b;
+            text-align: center;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            border-bottom: 2px dashed #f0d5b0;
+            padding-bottom: 8px;
+        }
+
+        .letter-content .letter-body {
+            font-family: 'Georgia', serif;
+            font-size: 15px;
+            line-height: 1.9;
+            color: #3d3527;
+            white-space: pre-line;
+            padding: 4px 0;
+        }
+
+        .letter-content .letter-body em {
+            color: #b58a6b;
+            font-style: italic;
+        }
+
+        .letter-content .letter-signoff {
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: #b58a6b;
+            text-align: right;
+            margin-top: 12px;
+            border-top: 1px dashed #f0d5b0;
+            padding-top: 10px;
+        }
+
+        .reset-btn {
+            background: #b58a6b;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 32px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #fff6ea;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 5px 0 #8f6e55;
+            transition: 0.15s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .reset-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #8f6e55;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 600px) {
+            .game-container {
+                padding: 16px 12px 14px;
+                border-radius: 32px;
+            }
+            .vn-stage {
+                flex-direction: column;
+                align-items: center;
+                min-height: 120px;
+                padding: 10px 0 0;
+            }
+            .sprite-container {
+                width: 80px;
+                height: 120px;
+                margin-right: 0;
+                margin-bottom: 4px;
+            }
+            .sprite-container img {
+                max-height: 100px;
+            }
+            .sprite-placeholder {
+                font-size: 50px;
+            }
+            .vn-dialogue {
+                min-height: 160px;
+                padding: 12px 14px;
+            }
+            .dialogue-text {
+                font-size: 15px;
+                min-height: 50px;
+            }
+            .word-grid {
+                max-width: 240px;
+                font-size: 14px;
+                padding: 6px;
+                gap: 3px;
+            }
+            .word-grid .cell {
+                font-size: 13px;
+                padding: 4px 0;
+            }
+            .shuriken-grid {
+                max-width: 180px;
+                gap: 4px;
+                padding: 6px;
+            }
+            .shuriken-grid .cell {
+                font-size: 18px;
+                padding: 6px 0;
+            }
+            .glitch-display {
+                font-size: 24px;
+                padding: 12px;
+                letter-spacing: 4px;
+            }
+            .pixel-tree {
+                grid-template-columns: repeat(11, 18px);
+                grid-template-rows: repeat(13, 18px);
+                gap: 1px;
+                padding: 4px;
+            }
+            .pixel-tree .cell {
+                width: 18px;
+                height: 18px;
+            }
+            .fruit-link-btn {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            .puzzle-input-row input {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+            .puzzle-input-row button {
+                font-size: 13px;
+                padding: 8px 16px;
+            }
+            .vn-controls .next-btn {
+                padding: 8px 20px;
+                font-size: 14px;
+            }
+            .fireworks {
+                font-size: 28px;
+                gap: 8px;
+                letter-spacing: 6px;
+            }
+            .case-badge {
+                font-size: 10px;
+            }
+            .case-badge .status {
+                font-size: 9px;
+                padding: 0 12px;
+            }
+            .badge-btn {
+                font-size: 9px;
+                padding: 3px 12px;
+            }
+            .panel {
+                max-height: 260px;
+                padding: 10px 12px;
+            }
+            .letter-content {
+                padding: 14px 16px;
+                max-height: 300px;
+            }
+            .letter-content .letter-body {
+                font-size: 14px;
+                line-height: 1.8;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .game-container {
+                padding: 10px 6px 12px;
+            }
+            .sprite-container {
+                width: 60px;
+                height: 90px;
+            }
+            .sprite-container img {
+                max-height: 70px;
+            }
+            .sprite-placeholder {
+                font-size: 40px;
+            }
+            .vn-dialogue {
+                padding: 8px 10px;
+                min-height: 140px;
+            }
+            .dialogue-text {
+                font-size: 14px;
+            }
+            .pixel-tree {
+                grid-template-columns: repeat(11, 14px);
+                grid-template-rows: repeat(13, 14px);
+                gap: 1px;
+                padding: 4px;
+            }
+            .pixel-tree .cell {
+                width: 14px;
+                height: 14px;
+            }
+            .word-grid {
+                max-width: 180px;
+                gap: 2px;
+                padding: 4px;
+            }
+            .word-grid .cell {
+                font-size: 11px;
+                padding: 3px 0;
+            }
+            .shuriken-grid {
+                max-width: 140px;
+                gap: 3px;
+                padding: 4px;
+            }
+            .shuriken-grid .cell {
+                font-size: 14px;
+                padding: 4px 0;
+            }
+            .glitch-display {
+                font-size: 18px;
+                padding: 8px;
+                letter-spacing: 2px;
+            }
+            .fruit-link-btn {
+                font-size: 11px;
+                padding: 3px 10px;
+            }
+            .letter-content {
+                padding: 10px 12px;
+                max-height: 250px;
+            }
+            .letter-content .letter-body {
+                font-size: 13px;
+                line-height: 1.7;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5ede2;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d9a066;
+            border-radius: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .divider {
+            border: none;
+            border-top: 2px dashed #f0d5b0;
+            margin: 10px 0;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .fruit-gift {
+            background: #fffbf4;
+            border-radius: 20px;
+            padding: 16px 18px;
+            margin: 12px 0 8px;
+            border: 2px dashed #f0d5b0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #3d3527;
+            display: none;
+            text-align: left;
+        }
+        .fruit-gift.show {
+            display: block;
+            animation: fadeSlide 0.3s ease;
+        }
+        .fruit-gift .gift-emoji {
+            font-size: 32px;
+            display: block;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- Case Badge -->
+        <div class="case-badge">
+            <span>📁 CF-070623 · Santero Island</span>
+            <span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <button class="badge-btn" id="residentToggleBtn">📋 Resident List</button>
+                <button class="badge-btn" id="caseFileToggleBtn">📂 Case File</button>
+                <span class="status" id="statusBadge">● ACTIVE</span>
+            </span>
+        </div>
+
+        <!-- Resident List Panel -->
+        <div class="panel" id="residentPanel">
+            <h4>🏝️ Santero Island Residents</h4>
+            <div id="residentListContainer"></div>
+        </div>
+
+        <!-- Case File Panel -->
+        <div class="panel" id="caseFilePanel">
+            <h4>
+                📂 Case File: CF-070623
+                <span class="page-nav">
+                    <button data-page="0" class="active-page">📋 Summary</button>
+                    <button data-page="1">📄 Evidence</button>
+                    <button data-page="2">👤 Suspects</button>
+                    <button data-page="3">📞 Interviews</button>
+                    <button data-page="4">📑 Report</button>
+                </span>
+            </h4>
+            <div class="panel-content" id="caseFileContent">
+                <div class="page active" data-page="0">
+                    <p><strong>Case:</strong> Disappearance of Sierra "Vanny" Santero<br />
+                    <strong>Date:</strong> 07/06/23 · 4:27 PM<br />
+                    <strong>Location:</strong> Santero Island<br />
+                    <strong>Lead Detective:</strong> Tyler<br />
+                    <strong>Field Agent:</strong> "B"</p>
+                    <p>Heiress to Santero Island, Sierra Santero, vanished en route to the private airstrip. Her belongings were found in a ditch — pink Crocs, cracked phone, and a satin ribbon with a cryptic message. Parents are cooperative but increasingly agitated.</p>
+                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">🔍 <em>Navigate pages for evidence, suspect profiles, and interview transcripts.</em></p>
+                </div>
+                <div class="page" data-page="1">
+                    <p><strong>📦 Evidence Log</strong></p>
+                    <ul style="list-style:none; padding:0; font-size:14px;">
+                        <li>• <strong>#001</strong> — Pink Crocs (ditch)</li>
+                        <li>• <strong>#002</strong> — Cracked phone (last photo: footprint with owl feather + crescent moon)</li>
+                        <li>• <strong>#003</strong> — Satin ribbon (cryptic riddle → "pizza rolls")</li>
+                        <li>• <strong>#004</strong> — Glyph drawing (pointed to Western Ridge)</li>
+                        <li>• <strong>#005</strong> — Spotify playlist (hidden message: "Tyler, do you know? Missing girls are found by dinosaurs on empty beaches")</li>
+                        <li>• <strong>#006</strong> — Training ground weapons cache (key = 7 shurikens)</li>
+                        <li>• <strong>#007</strong> — Glitched note (unscrambled: "BALANCE")</li>
+                        <li>• <strong>#008</strong> — Shipping manifest (Heartwood Soil, Black Market Buyer, signed by Mr. Santero)</li>
+                    </ul>
+                </div>
+                <div class="page" data-page="2">
+                    <p><strong>👤 Suspect Profiles</strong></p>
+                    <ul style="list-style:none; padding:0; font-size:14px;">
+                        <li>• <strong>Luz & Amity</strong> — Eastern Bungalow. ✅ Cleared (alibi confirmed).</li>
+                        <li>• <strong>Soyona & Brooklynn</strong> — Western Ridge. ✅ Cleared (provided drone footage).</li>
+                        <li>• <strong>Naruto & Sasuke</strong> — Training Grounds. ✅ Cleared (provided password-locked evidence).</li>
+                        <li>• <strong>Jax & Ragatha</strong> — Digital Circus Tent. ✅ Cleared (provided glitched note).</li>
+                        <li>• <strong>Ellie & Abby</strong> — Airstrip Bungalow. ✅ Cleared (provided manifest).</li>
+                        <li style="margin-top:8px; border-top:1px dashed #f0d5b0; padding-top:8px;">• <strong>⚠️ Agent "B"</strong> — Only resident with a van (NYC-419). Under investigation.</li>
+                    </ul>
+                </div>
+                <div class="page" data-page="3">
+                    <p><strong>📞 Interview Summaries</strong></p>
+                    <ul style="list-style:none; padding:0; font-size:14px;">
+                        <li>• <strong>Luz & Amity:</strong> Saw blue van (NYC-419) near airstrip. Found glyph pointing to Western Ridge.</li>
+                        <li>• <strong>Soyona & Brooklynn:</strong> Drone caught cargo ship "The Seraphina" at private pier. Saw Gregor heading to Training Grounds.</li>
+                        <li>• <strong>Naruto & Sasuke:</strong> Saw Gregor with BLACK MARKET folder. Password-locked evidence (key = 7 shurikens).</li>
+                        <li>• <strong>Jax & Ragatha:</strong> Overheard Gregor mention signed manifest and buyer meeting at Airstrip Bungalow.</li>
+                        <li>• <strong>Ellie & Abby:</strong> Found shipping manifest in van. Signed by Mr. Santero. Plate: NYC‑419.</li>
+                    </ul>
+                </div>
+                <div class="page" data-page="4">
+                    <p><strong>📑 Final Report — CLASSIFIED</strong></p>
+                    <p style="font-size:14px; color:#8f7a5f;"><em>Awaiting final confirmation from lead detective.</em></p>
+                    <p style="font-size:13px; color:#8f7a5f; margin-top:6px;">🔐 <em>This report will auto‑populate once the investigation is complete.</em></p>
+                    <div id="finalReportContent" style="display:none; margin-top:10px; padding:12px; background:#f5ede2; border-radius:12px; border:2px solid #d9a066;">
+                        <p><strong>✅ CASE SOLVED</strong></p>
+                        <p>Sierra Santero faked her disappearance to expose her parents' Heartwood smuggling operation. Agent "B" (undercover) assisted her. The Santeros have been charged with illegal trafficking. Sierra is alive and safe.</p>
+                        <p style="margin-top:6px; font-style:italic; color:#6b4f3a;">"The island is safe. And our Love Tree is protected." — Agent B</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── VISUAL NOVEL SCENE ─── -->
+        <div class="vn-scene" id="vnScene">
+            <div class="vn-stage">
+                <div class="sprite-container" id="spriteContainer">
+                    <div class="sprite-placeholder">🌿</div>
+                </div>
+                <div class="vn-dialogue" id="dialogueBox">
+                    <div class="speaker-name" id="speakerName">
+                        <span>📢 Narrator</span>
+                        <span class="badge">▼</span>
+                    </div>
+                    <div class="dialogue-text" id="dialogueText">
+                        <p>Loading investigation...</p>
+                    </div>
+                    <div id="puzzleContainer"></div>
+                    <div id="choiceContainer"></div>
+                    <div class="vn-controls">
+                        <button class="next-btn" id="nextBtn">▶ Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── TREE FINALE ─── -->
+        <div class="tree-finale" id="treeFinale">
+            <div class="fireworks">
+                <span>🎆</span><span>✨</span><span>🎆</span><span>✨</span>
+            </div>
+            <div style="text-align:center; margin: 0 0 6px;">
+                <span style="font-size:32px;">🌳</span>
+                <p style="font-size:14px; color:#8f7a5f; margin-top:-2px;">Our Anniversary Tree — click each orange to open your gift</p>
+            </div>
+
+            <div class="pixel-tree-wrapper">
+                <div class="pixel-tree" id="pixelTree"></div>
+            </div>
+
+            <div class="fruit-grid-links" id="fruitLinksContainer"></div>
+
+            <div id="giftDisplay" style="display:none;"></div>
+
+            <div class="physical-hint">
+                <span style="font-size:28px; display:block;">❄️</span>
+                <strong>🍊 THE ORANGE — Physical Gift</strong><br />
+                <em>"I hid it where the cold sleeps."</em><br /><br />
+                <strong>Check the FREEZER.</strong> Behind the ice cream, a bag labelled <strong>"EVIDENCE #419 — LOVE FRUIT"</strong>.<br />
+                Inside is a real orange from our tree. Sweet, unbreakable, all yours.
+            </div>
+
+            <button class="reset-btn" id="resetBtn">🔄 Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // ─── CONFIGURATION ───
+        // Fruit 0: Orange (physical), Fruit 1: Playlist, Fruit 2: Poem (Special Letter), Fruit 3-6: Links
+        const FRUIT_URLS = [
+            '#', // Fruit 1 – physical gift (non-clickable)
+            'https://open.spotify.com/playlist/29cQ44SAYywcLLoiqgsIBZ', // Fruit 2 – gift playlist
+            '#', // Fruit 3 – Poem (handled internally)
+            'https://example.com/photos', // Fruit 4 – photo collage
+            'https://example.com/coupons', // Fruit 5 – coupons
+            'https://example.com/confession', // Fruit 6 – confession
+            'https://example.com/drawing.png' // Fruit 7 – drawing
+        ];
+
+        const SPRITE_PATH = 'assets/sprites/';
+
+        // ─── RESIDENT DATA ───
+        const residents = [{
+            id: 'luz_amity',
+            name: 'Luz Noceda & Amity Blight',
+            location: 'Eastern Bungalow',
+            vehicle: 'Matching Mopeds',
+            details: 'Owl House fans. Known for glyph magic and Azura books.'
+        }, {
+            id: 'soyona_brooklynn',
+            name: 'Soyona Santos & Brooklynn',
+            location: 'Western Ridge',
+            vehicle: 'ATV "Raptor"',
+            details: 'Dinosaur trackers. Use drones for thermal imaging.'
+        }, {
+            id: 'naruto_sasuke',
+            name: 'Naruto Uzumaki & Sasuke Uchiha',
+            location: 'Training Grounds',
+            vehicle: 'Red Sports Car',
+            details: 'Ninja training. Known for shuriken and jutsu.'
+        }, {
+            id: 'jax_ragatha',
+            name: 'Jax & Ragatha',
+            location: 'Digital Circus Tent',
+            vehicle: 'Vintage Convertible',
+            details: 'Digital circus performers. Abstract and glitchy.'
+        }, {
+            id: 'ellie_abby',
+            name: 'Ellie Williams & Abby Anderson',
+            location: 'Airstrip Bungalow',
+            vehicle: 'Jeep Wrangler',
+            details: 'Survivors. Know their way around a conspiracy.'
+        }, {
+            id: 'agent_b',
+            name: 'Agent "B"',
+            location: 'Island Liaison Office',
+            vehicle: '🚐 Blue Cargo Van — NYC-419',
+            details: 'Undercover investigator. Has been on the island for months.'
+        }];
+
+        // ─── DIALOGUE DATA ───
+        const dialogue = [{
+            // 0: Opening — Agent B introduction
+            speaker: '🕵️ Agent B',
+            text: 'Detective Tyler. I\'m Agent B. I\'ve been assigned to this case. The Santero girl vanished at 4:27 PM from the main road. Her parents are... well, they\'re putting on a show.',
+            sprite: 'agent_b'
+        }, {
+            // 1: Parent message — polite
+            speaker: '📩 Mr. Santero',
+            text: 'Please, Detective. Find our daughter. We\'ll cooperate fully. Just... bring her home.',
+            sprite: null,
+            parentMessage: { sender: 'Mr. Santero', text: 'Please, Detective. Find our daughter. We\'ll cooperate fully. Just... bring her home.', aggressive: false }
+        }, {
+            // 2: Crime scene briefing
+            speaker: '🔍 Forensics',
+            text: 'Sierra\'s phone was found in a ditch near the Eastern Bungalow. The last photo shows a footprint in the mud — an owl feather and a crescent moon symbol. That\'s a distinct calling card.',
+            sprite: null
+        }, {
+            // 3: Puzzle — footprint
+            speaker: '🕵️ Agent B',
+            text: 'That footprint belongs to someone specific. Enter their names below to confirm.',
+            sprite: 'agent_b',
+            puzzle: 'footprint'
+        }, {
+            // 4: Luz & Amity cleared
+            speaker: '🦉 Luz Noceda',
+            text: 'Oh my gosh, a detective! This is so cool! Okay, okay, so we were at the Boiling Isles at 4:27 PM. I have photos! Eda took them. We were literally eating dinner. But listen — when we flew back over the island, we saw a blue van near the airstrip. It had a plate that said NYC‑419. That\'s not a local plate, right?',
+            sprite: 'luz'
+        }, {
+            // 5: Amity with glyph
+            speaker: '📝 Amity Blight',
+            text: 'Luz, let them speak. But she\'s right. We also found a weird drawing near the airstrip. It had this glyph on it... it looked like a dinosaur skeleton? Or maybe a raptor? I don\'t know, but it pointed toward the Western Ridge.',
+            sprite: 'amity'
+        }, {
+            // 6: Agent B reviews — prompts Spotify puzzle
+            speaker: '🕵️ Agent B',
+            text: 'A glyph pointing to the Western Ridge... that\'s where Soyona and Brooklynn live. They drive an ATV called the Raptor. But before we go there, I found something else. A Spotify playlist left near the airstrip. It might have a hidden message. See if you can decode it.',
+            sprite: 'agent_b',
+            puzzle: 'spotify'
+        }, {
+            // 7: Parent message — impatient
+            speaker: '📩 Mr. Santero',
+            text: 'Detective. I hope you\'re not wasting time on dead ends. Focus on finding my daughter. Not on digging up dirt.',
+            sprite: null,
+            parentMessage: { sender: 'Mr. Santero', text: 'Detective. I hope you\'re not wasting time on dead ends. Focus on finding my daughter. Not on digging up dirt.', aggressive: true }
+        }, {
+            // 8: Agent B reveals decoded message
+            speaker: '🕵️ Agent B',
+            text: 'So the hidden message is... "Tyler, do you know? Missing girls are found by dinosaurs on empty beaches." Creepy... they\'re addressing you specifically! But what do dinosaurs have to do with this??',
+            sprite: 'agent_b'
+        }, {
+            // 9: Choice — who to interrogate?
+            speaker: '🕵️ Agent B',
+            text: 'Well, Detective? The glyph pointed to the Western Ridge. And the message mentions dinosaurs. Who do you think we should talk to?',
+            sprite: 'agent_b',
+            choices: [
+                { text: '🦉 Luz & Amity — Eastern Bungalow', nextIndex: 10, correct: false },
+                { text: '🦖 Soyona & Brooklynn — Western Ridge', nextIndex: 11, correct: true },
+                { text: '🍥 Naruto & Sasuke — Training Grounds', nextIndex: 10, correct: false },
+                { text: '🎪 Jax & Ragatha — Digital Circus Tent', nextIndex: 10, correct: false },
+                { text: '🎸 Ellie & Abby — Airstrip Bungalow', nextIndex: 10, correct: false }
+            ]
+        }, {
+            // 10: Wrong choice response
+            speaker: '❌ Wrong Choice',
+            text: 'The couple looks at you confused. "Why the visit? This evidence doesn\'t even point to us!!" Try again.',
+            sprite: null
+        }, {
+            // 11: Soyona & Brooklynn — correct
+            speaker: '🦖 Soyona Santos',
+            text: 'We were tracking thermal signatures in the jungle at 4:30 PM. Our drone caught a cargo ship docking at the private pier. That\'s weird because the tide was too low for any normal shipping. The ship was called "The Seraphina."',
+            sprite: 'soyona'
+        }, {
+            // 12: Brooklynn
+            speaker: '📡 Brooklynn',
+            text: 'We also saw a man taking photos near the pier. We recognized him — it was Gregor, Mr. Santero\'s assistant. He seemed really nervous. He walked toward the Training Grounds after that.',
+            sprite: 'brooklynn'
+        }, {
+            // 13: Agent B review — prompts choice
+            speaker: '🕵️ Agent B',
+            text: 'The Training Grounds... who do you think would\'ve seen something there?',
+            sprite: 'agent_b',
+            choices: [
+                { text: '🦉 Luz & Amity — Eastern Bungalow', nextIndex: 14, correct: false },
+                { text: '🦖 Soyona & Brooklynn — Western Ridge', nextIndex: 14, correct: false },
+                { text: '🍥 Naruto & Sasuke — Training Grounds', nextIndex: 15, correct: true },
+                { text: '🎪 Jax & Ragatha — Digital Circus Tent', nextIndex: 14, correct: false },
+                { text: '🎸 Ellie & Abby — Airstrip Bungalow', nextIndex: 14, correct: false }
+            ]
+        }, {
+            // 14: Wrong choice response
+            speaker: '❌ Wrong Choice',
+            text: 'The couple shrugs. "We didn\'t see anything. Why would we? We don\'t even live near the Training Grounds." Try again.',
+            sprite: null
+        }, {
+            // 15: Naruto & Sasuke
+            speaker: '🍥 Naruto Uzumaki',
+            text: 'Believe it! We were training and we saw Gregor walk by with a folder that said BLACK MARKET on it. He looked really suspicious. He went toward the Digital Circus Tent.',
+            sprite: 'naruto'
+        }, {
+            // 16: Sasuke with shuriken puzzle
+            speaker: '⚔️ Sasuke Uchiha',
+            text: 'We recorded the weird behavior then itself, but kept it password-locked on-site so the wrong person couldn\'t access it. The key should be the amount of one type of the weapons we left there.. Naruto.. do you remember?',
+            sprite: 'sasuke'
+        }, {
+            // 17: Naruto response
+            speaker: '🍥 Naruto Uzumaki',
+            text: 'Oh no! I don\'t!! All I remember was that you can\'t really use it in close combat..',
+            sprite: 'naruto'
+        }, {
+            // 18: Puzzle — shuriken count
+            speaker: '⚔️ Sasuke Uchiha',
+            text: 'There are four swords, eight kunai, and some shurikens. Count the shurikens. That\'s the key.',
+            sprite: 'sasuke',
+            puzzle: 'shuriken'
+        }, {
+            // 19: Jax & Ragatha
+            speaker: '🎪 Jax',
+            text: 'Oh, the folder guy? Yeah, he came by. He was muttering about a signed manifest and a buyer. He said the buyer was meeting him at the Airstrip Bungalow. That\'s Ellie and Abby\'s place.',
+            sprite: 'jax'
+        }, {
+            // 20: Ragatha with glitch puzzle
+            speaker: '🎀 Ragatha',
+            text: 'He dropped this piece of paper. It\'s all scrambled. I think it\'s some kind of code. Maybe you can make sense of it?',
+            sprite: 'ragatha',
+            puzzle: 'glitch'
+        }, {
+            // 21: Parent message — Mrs. Santero memory
+            speaker: '📩 Mrs. Santero',
+            text: 'She always loved books... she\'d stay up all night reading. Please hurry, Detective.',
+            sprite: null,
+            parentMessage: { sender: 'Mrs. Santero', text: 'She always loved books... she\'d stay up all night reading. Please hurry, Detective.', aggressive: false }
+        }, {
+            // 22: Ellie & Abby
+            speaker: '🎸 Ellie Williams',
+            text: 'Yeah, Gregor came by. He was stressed. Told us to stay inside and not mention the ship to anyone. That\'s a red flag if I\'ve ever seen one.',
+            sprite: 'ellie'
+        }, {
+            // 23: Abby — van plate puzzle
+            speaker: '🏹 Abby Anderson',
+            text: 'We looked inside his van. Found a shipping manifest. It said "Heartwood Soil – 500kg – Destination: Black Market Buyer – Departure: 07/06/23 6:00 PM." It was signed by Mr. Santero. The van\'s plate was NYC‑419.',
+            sprite: 'abby',
+            puzzle: 'vanplate'
+        }, {
+            // 24: Parent message — Mrs. Santero memory 2
+            speaker: '📩 Mrs. Santero',
+            text: 'She never knew when to stop snooping around.. she always had to know everything. That\'s what got her into this mess.',
+            sprite: null,
+            parentMessage: { sender: 'Mrs. Santero', text: 'She never knew when to stop snooping around.. she always had to know everything. That\'s what got her into this mess.', aggressive: false }
+        }, {
+            // 25: Parent message — aggressive Mr. Santero
+            speaker: '📩 Mr. Santero',
+            text: 'I\'ve had enough of this. You\'re supposed to be finding my daughter, not interrogating every resident on the island. Stop wasting time.',
+            sprite: null,
+            parentMessage: { sender: 'Mr. Santero', text: 'I\'ve had enough of this. You\'re supposed to be finding my daughter, not interrogating every resident on the island. Stop wasting time.', aggressive: true }
+        }, {
+            // 26: Parent message — Mrs. Santero with Vanny clue
+            speaker: '📩 Mrs. Santero',
+            text: 'Everyone loved her silliness and passion... the common folk even gave her the inane nickname "Vanny" because she was so fixated on the only vehicle that isn\'t allowed on the island!! Even though it\'s only for environmental reasons, she always used to say she\'d only go off on her own as an independent person in a van someday..',
+            sprite: null,
+            parentMessage: { sender: 'Mrs. Santero', text: 'Everyone loved her silliness and passion... the common folk even gave her the inane nickname "Vanny" because she was so fixated on the only vehicle that isn\'t allowed on the island!! Even though it\'s only for environmental reasons, she always used to say she\'d only go off on her own as an independent person in a van someday..',
+                aggressive: false }
+        }, {
+            // 27: Internal dialogue — van realization
+            speaker: '🧠 Detective\'s Thoughts',
+            text: 'Wait... a van... and no one here has a van except for...',
+            sprite: null
+        }, {
+            // 28: Internal dialogue — check resident list
+            speaker: '🧠 Detective\'s Thoughts',
+            text: 'I should check the resident list. There\'s a "More Info" button for each resident. I need to see who has a van.',
+            sprite: null
+        }, {
+            // 29: Agent B reveal (finale)
+            speaker: '🕵️ Agent B',
+            text: 'NYC‑419. That\'s my van. I know how that looks. But I\'m not the bad guy here, Tyler. I\'ve been undercover for months. Sierra came to me with the evidence. I helped her disappear so we could build a case without her parents silencing her.',
+            sprite: 'agent_b'
+        }, {
+            // 30: Sierra
+            speaker: '👧 Sierra "Vanny" Santero',
+            text: 'Detective! I\'m so sorry for all the drama. But my parents were going to sell the island\'s Heartwood to black market buyers. They\'re destroying the Love Trees. I found the documents and they called me crazy. So I ran. Agent B helped me. She\'s not a suspect. She\'s a hero.',
+            sprite: 'sierra'
+        }, {
+            // 31: Agent B final
+            speaker: '🕵️ Agent B',
+            text: 'With the drone footage, the shipping manifests, the signatures, and the testimonies from the residents, we have enough to shut down the entire operation. The Santeros have agreed to a deal. The island is safe. And our Love Tree is protected.',
+            sprite: 'agent_b'
+        }, {
+            // 32: Agent B tree reveal
+            speaker: '🕵️ Agent B',
+            text: 'Our tree bore 7 fruits this year. Each one is a gift for you. Click them on the tree to open your Anniversary Gifts. And Tyler... I hid something special in the freezer for you. An orange from our tree. I\'ll let you find it.',
+            sprite: 'agent_b'
+        }];
+
+        // ─── PUZZLE SOLUTIONS ───
+        const solutions = {
+            footprint: 'luz amity',
+            spotify: 'tyler, do you know? missing girls are found by dinosaurs on empty beaches',
+            shuriken: '7',
+            glitch: 'balance',
+            vanplate: 'nyc419'
+        };
+
+        // ─── STATE ───
+        let currentDialogueIndex = 0;
+        let puzzleSolved = {};
+        let choicesTaken = {};
+        let fruitsPlucked = {};
+        let residentPanelOpen = false;
+        let caseFileOpen = false;
+
+        const vnScene = document.getElementById('vnScene');
+        const treeFinale = document.getElementById('treeFinale');
+        const spriteContainer = document.getElementById('spriteContainer');
+        const speakerName = document.getElementById('speakerName');
+        const dialogueText = document.getElementById('dialogueText');
+        const puzzleContainer = document.getElementById('puzzleContainer');
+        const choiceContainer = document.getElementById('choiceContainer');
+        const nextBtn = document.getElementById('nextBtn');
+        const statusBadge = document.getElementById('statusBadge');
+        const residentPanel = document.getElementById('residentPanel');
+        const residentToggleBtn = document.getElementById('residentToggleBtn');
+        const residentListContainer = document.getElementById('residentListContainer');
+        const caseFilePanel = document.getElementById('caseFilePanel');
+        const caseFileToggleBtn = document.getElementById('caseFileToggleBtn');
+        const caseFilePages = document.querySelectorAll('.page');
+        const pageNavButtons = document.querySelectorAll('.page-nav button');
+        const finalReportContent = document.getElementById('finalReportContent');
+
+        // ─── BUILD RESIDENT LIST ───
+        function buildResidentList() {
+            residentListContainer.innerHTML = '';
+            residents.forEach((res, idx) => {
+                const item = document.createElement('div');
+                item.className = 'resident-item';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = `${res.name} (${res.location})`;
+
+                const actionsSpan = document.createElement('span');
+                actionsSpan.style.display = 'flex';
+                actionsSpan.style.alignItems = 'center';
+                actionsSpan.style.gap = '6px';
+                actionsSpan.style.flexWrap = 'wrap';
+
+                if (res.id === 'agent_b') {
+                    const badge = document.createElement('span');
+                    badge.className = 'van-badge';
+                    badge.textContent = '🚐 VAN';
+                    actionsSpan.appendChild(badge);
+                }
+
+                const moreBtn = document.createElement('button');
+                moreBtn.className = 'more-info-btn';
+                moreBtn.textContent = 'More Info';
+                moreBtn.dataset.residentIdx = idx;
+                moreBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const detail = item.querySelector('.resident-detail');
+                    if (detail) {
+                        detail.classList.toggle('show');
+                        this.textContent = detail.classList.contains('show') ? 'Less Info' : 'More Info';
+                    }
+                });
+                actionsSpan.appendChild(moreBtn);
+
+                item.appendChild(nameSpan);
+                item.appendChild(actionsSpan);
+
+                const detail = document.createElement('div');
+                detail.className = 'resident-detail';
+                detail.innerHTML = `
+                            <strong>Vehicle:</strong> ${res.vehicle}<br />
+                            <strong>Details:</strong> ${res.details}
+                            ${res.id === 'agent_b' ? '<br /><span style="color:#d94f4f;font-weight:700;">⚠️ This is the only van on the island.</span>' : ''}
+                        `;
+                item.appendChild(detail);
+
+                residentListContainer.appendChild(item);
+            });
+        }
+
+        // ─── TOGGLE RESIDENT LIST ───
+        residentToggleBtn.addEventListener('click', function() {
+            residentPanelOpen = !residentPanelOpen;
+            residentPanel.classList.toggle('open', residentPanelOpen);
+            this.textContent = residentPanelOpen ? '📋 Hide List' : '📋 Resident List';
+            if (residentPanelOpen && caseFileOpen) {
+                caseFilePanel.classList.remove('open');
+                caseFileOpen = false;
+                caseFileToggleBtn.textContent = '📂 Case File';
+            }
+        });
+
+        // ─── TOGGLE CASE FILE ───
+        caseFileToggleBtn.addEventListener('click', function() {
+            caseFileOpen = !caseFileOpen;
+            caseFilePanel.classList.toggle('open', caseFileOpen);
+            this.textContent = caseFileOpen ? '📂 Hide File' : '📂 Case File';
+            if (caseFileOpen && residentPanelOpen) {
+                residentPanel.classList.remove('open');
+                residentPanelOpen = false;
+                residentToggleBtn.textContent = '📋 Resident List';
+            }
+        });
+
+        // ─── CASE FILE PAGE NAV ───
+        pageNavButtons.forEach((btn, idx) => {
+            btn.addEventListener('click', function() {
+                pageNavButtons.forEach(b => b.classList.remove('active-page'));
+                this.classList.add('active-page');
+                caseFilePages.forEach(page => page.classList.remove('active'));
+                document.querySelector(`.page[data-page="${idx}"]`).classList.add('active');
+            });
+        });
+
+        // ─── AUTO-POPULATE FINAL REPORT ───
+        function updateFinalReport() {
+            const allSolved = Object.keys(solutions).every(k => puzzleSolved[k]);
+            if (allSolved || currentDialogueIndex >= dialogue.length - 1) {
+                finalReportContent.style.display = 'block';
+            }
+        }
+
+        // ─── SPRITE LOADER ───
+        function setSprite(spriteId) {
+            spriteContainer.innerHTML = '';
+            if (!spriteId) {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'sprite-placeholder';
+                placeholder.textContent = '🌿';
+                spriteContainer.appendChild(placeholder);
+                return;
+            }
+            const img = document.createElement('img');
+            img.src = SPRITE_PATH + spriteId + '.png';
+            img.alt = spriteId;
+            img.onerror = function() {
+                const fallback = document.createElement('div');
+                fallback.className = 'sprite-placeholder';
+                const emojis = {
+                    agent_b: '🕵️',
+                    sierra: '👧',
+                    luz: '🦉',
+                    amity: '📝',
+                    soyona: '🦖',
+                    brooklynn: '📡',
+                    naruto: '🍥',
+                    sasuke: '⚔️',
+                    jax: '🎪',
+                    ragatha: '🎀',
+                    ellie: '🎸',
+                    abby: '🏹'
+                };
+                fallback.textContent = emojis[spriteId] || '🌿';
+                spriteContainer.appendChild(fallback);
+            };
+            spriteContainer.appendChild(img);
+        }
+
+        // ─── WORD SEARCH GRID ───
+        const gridData = [
+            ['E', 'D', 'A', 'X', 'K', 'I', 'N'],
+            ['L', 'U', 'Z', 'B', 'O', 'W', 'L'],
+            ['I', 'S', 'L', 'E', 'S', 'G', 'L'],
+            ['Y', 'P', 'H', 'G', 'L', 'Y', 'P'],
+            ['A', 'M', 'I', 'T', 'Y', 'X', 'H'],
+            ['O', 'W', 'L', 'X', 'K', 'I', 'N'],
+            ['B', 'O', 'I', 'L', 'I', 'N', 'G']
+        ];
+
+        // ─── SHURIKEN GRID ───
+        const shurikenData = [
+            ['⭐', '⬡', '⬡', '⭐', '⬡'],
+            ['⬡', '⭐', '⬡', '⬡', '⭐'],
+            ['⬡', '⬡', '⭐', '⬡', '⬡'],
+            ['⭐', '⬡', '⬡', '⭐', '⬡'],
+            ['⬡', '⭐', '⬡', '⬡', '⭐']
+        ];
+
+        // ─── RENDER DIALOGUE ───
+        function renderDialogue(index) {
+            const entry = dialogue[index];
+            if (!entry) return;
+
+            speakerName.innerHTML = entry.speaker;
+
+            let textHtml = entry.text;
+            if (entry.parentMessage) {
+                const cls = entry.parentMessage.aggressive ? 'parent-message aggressive' : 'parent-message';
+                textHtml +=
+                    `<div class="${cls}"><span class="sender">${entry.parentMessage.sender}:</span> ${entry.parentMessage.text}</div>`;
+            }
+            dialogueText.innerHTML = textHtml;
+
+            setSprite(entry.sprite || null);
+
+            puzzleContainer.innerHTML = '';
+            if (entry.puzzle && !puzzleSolved[entry.puzzle]) {
+                buildPuzzle(entry.puzzle);
+                nextBtn.disabled = true;
+            } else {
+                nextBtn.disabled = false;
+            }
+
+            choiceContainer.innerHTML = '';
+            if (entry.choices) {
+                const choiceDiv = document.createElement('div');
+                choiceDiv.className = 'choice-area';
+
+                entry.choices.forEach((choice, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'choice-btn';
+                    btn.textContent = choice.text;
+                    btn.addEventListener('click', function() {
+                        if (choice.correct) {
+                            currentDialogueIndex = choice.nextIndex;
+                            renderDialogue(currentDialogueIndex);
+                        } else {
+                            currentDialogueIndex = choice.nextIndex;
+                            renderDialogue(currentDialogueIndex);
+                        }
+                    });
+                    choiceDiv.appendChild(btn);
+                });
+
+                choiceContainer.appendChild(choiceDiv);
+                nextBtn.disabled = true;
+            } else {
+                if (!entry.puzzle || puzzleSolved[entry.puzzle]) {
+                    nextBtn.disabled = false;
+                }
+            }
+
+            if (index === dialogue.length - 1) {
+                statusBadge.textContent = '● CLOSED';
+                statusBadge.style.background = '#2f7a2f';
+            } else {
+                statusBadge.textContent = '● ACTIVE';
+                statusBadge.style.background = '#d9a066';
+            }
+
+            if (index === 28) {
+                residentPanelOpen = true;
+                residentPanel.classList.add('open');
+                residentToggleBtn.textContent = '📋 Hide List';
+                const items = residentListContainer.querySelectorAll('.resident-item');
+                items.forEach((item, idx) => {
+                    if (idx === 5) {
+                        item.style.background = '#fde8d0';
+                        item.style.borderRadius = '8px';
+                        item.style.padding = '4px 8px';
+                        const detail = item.querySelector('.resident-detail');
+                        const btn = item.querySelector('.more-info-btn');
+                        if (detail && !detail.classList.contains('show')) {
+                            detail.classList.add('show');
+                            if (btn) btn.textContent = 'Less Info';
+                        }
+                    }
+                });
+            }
+
+            updateFinalReport();
+        }
+
+        // ─── BUILD PUZZLE ───
+        function buildPuzzle(type) {
+            const container = puzzleContainer;
+            const div = document.createElement('div');
+            div.className = 'puzzle-area';
+
+            switch (type) {
+                case 'footprint':
+                    div.innerHTML = `
+                                <label>🔎 Enter both first names (space separated):</label>
+                                <div class="puzzle-input-row">
+                                    <input type="text" id="puzzleInput" placeholder="e.g. luz amity" autocomplete="off" />
+                                    <button id="puzzleBtn">🔍 CHECK</button>
+                                </div>
+                                <div class="puzzle-feedback" id="puzzleFeedback"></div>
+                            `;
+                    break;
+                case 'spotify':
+                    div.innerHTML = `
+                                <div style="border-radius:16px; overflow:hidden; margin:8px 0; background:#121212; padding:4px;">
+                                    <iframe style="border-radius:12px; width:100%; height:152px;" src="https://open.spotify.com/embed/playlist/3eKofJc6sUU3OfpxtbSSmv?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                                </div>
+                                <p style="font-size:12px; color:#8f7a5f; text-align:center;">There's a hidden message in the playlist. Can you find it?</p>
+                                <label>🔎 Enter the hidden message:</label>
+                                <div class="puzzle-input-row">
+                                    <input type="text" id="puzzleInput" placeholder="type the message..." autocomplete="off" />
+                                    <button id="puzzleBtn">🔍 CHECK</button>
+                                </div>
+                                <div class="puzzle-feedback" id="puzzleFeedback"></div>
+                            `;
+                    break;
+                case 'shuriken':
+                    let sGrid = '<div class="shuriken-grid">';
+                    shurikenData.forEach(row => {
+                        row.forEach(sym => {
+                            sGrid += `<div class="cell">${sym}</div>`;
+                        });
+                    });
+                    sGrid += '</div>';
+                    sGrid += `
+                                <label>⚔️ Count the shurikens (⭐) — enter the number:</label>
+                                <div class="puzzle-input-row">
+                                    <input type="text" id="puzzleInput" placeholder="number" autocomplete="off" />
+                                    <button id="puzzleBtn">⚔️ CHECK</button>
+                                </div>
+                                <div class="puzzle-feedback" id="puzzleFeedback"></div>
+                            `;
+                    div.innerHTML = sGrid;
+                    break;
+                case 'glitch':
+                    div.innerHTML = `
+                                <div class="glitch-display">A A L B C N E</div>
+                                <p style="font-size:14px; color:#8f7a5f; text-align:center;">Unscramble the letters.</p>
+                                <label>🌀 Enter the unscrambled word:</label>
+                                <div class="puzzle-input-row">
+                                    <input type="text" id="puzzleInput" placeholder="7 letters" autocomplete="off" />
+                                    <button id="puzzleBtn">🌀 CHECK</button>
+                                </div>
+                                <div class="puzzle-feedback" id="puzzleFeedback"></div>
+                            `;
+                    break;
+                case 'vanplate':
+                    div.innerHTML = `
+                                <label>🚐 Enter the van's license plate (e.g. NYC-419):</label>
+                                <div class="puzzle-input-row">
+                                    <input type="text" id="puzzleInput" placeholder="NYC-XXX" autocomplete="off" />
+                                    <button id="puzzleBtn">🚐 CONFIRM</button>
+                                </div>
+                                <div class="puzzle-feedback" id="puzzleFeedback"></div>
+                            `;
+                    break;
+                default:
+                    div.textContent = 'Puzzle loading...';
+            }
+
+            container.appendChild(div);
+
+            const input = document.getElementById('puzzleInput');
+            const btn = document.getElementById('puzzleBtn');
+            const fb = document.getElementById('puzzleFeedback');
+
+            if (input && btn) {
+                const checkPuzzle = () => {
+                    const val = input.value.trim().toLowerCase();
+                    const solution = solutions[type];
+
+                    let correct = false;
+                    if (type === 'footprint') {
+                        if (val === 'luz amity' || val === 'luzamity') correct = true;
+                    } else if (type === 'spotify') {
+                        const normalized = val.replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+                        const target = "tyler do you know missing girls are found by dinosaurs on empty beaches";
+                        if (normalized === target) correct = true;
+                        if (val.includes('tyler') && val.includes('dinosaurs')) correct = true;
+                    } else if (type === 'shuriken') {
+                        if (val === '7') correct = true;
+                    } else if (type === 'glitch') {
+                        if (val === 'balance') correct = true;
+                    } else if (type === 'vanplate') {
+                        const clean = val.replace(/-/g, '');
+                        if (clean === 'nyc419') correct = true;
+                    }
+
+                    if (correct) {
+                        fb.className = 'puzzle-feedback success';
+                        fb.textContent = '✅ Correct! Puzzle solved.';
+                        btn.disabled = true;
+                        input.disabled = true;
+                        puzzleSolved[type] = true;
+                        nextBtn.disabled = false;
+                        updateFinalReport();
+                    } else {
+                        fb.className = 'puzzle-feedback error';
+                        if (type === 'spotify') {
+                            fb.textContent = '❌ I don\'t think that\'s in there.. Try again.';
+                        } else {
+                            fb.textContent = '❌ Not quite. Try again.';
+                        }
+                        setTimeout(() => { fb.className = 'puzzle-feedback'; }, 2000);
+                    }
+                };
+                btn.addEventListener('click', checkPuzzle);
+                input.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkPuzzle(); });
+            }
+        }
+
+        // ─── NEXT BUTTON ───
+        nextBtn.addEventListener('click', function() {
+            if (this.disabled) return;
+
+            if (currentDialogueIndex === dialogue.length - 1) {
+                vnScene.style.display = 'none';
+                treeFinale.classList.add('active');
+                statusBadge.textContent = '● CLOSED';
+                statusBadge.style.background = '#2f7a2f';
+                buildPixelTree();
+                buildFruitLinks();
+                finalReportContent.style.display = 'block';
+                return;
+            }
+
+            currentDialogueIndex++;
+            renderDialogue(currentDialogueIndex);
+        });
+
+        // ─── KEYBOARD SUPPORT ───
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ' || e.key === 'Enter') {
+                if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+                e.preventDefault();
+                if (!nextBtn.disabled) nextBtn.click();
+            }
+        });
+
+        // ─── PIXEL TREE ───
+        const treePattern = [
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+            [0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0],
+            [0, 0, 1, 1, 2, 2, 2, 1, 1, 0, 0],
+            [0, 0, 1, 2, 2, 3, 2, 2, 1, 0, 0],
+            [0, 1, 1, 2, 3, 3, 3, 2, 1, 1, 0],
+            [0, 1, 2, 2, 3, 3, 3, 2, 2, 1, 0],
+            [1, 1, 2, 3, 3, 3, 3, 3, 2, 1, 1],
+            [1, 1, 2, 3, 3, 4, 3, 3, 2, 1, 1],
+            [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+            [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+            [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+        ];
+
+        function getTreeClass(val) {
+            switch (val) {
+                case 1:
+                    return 'tree-bark';
+                case 2:
+                    return 'tree-leaf';
+                case 3:
+                    return 'tree-leaf-light';
+                case 4:
+                    return 'tree-leaf-dark';
+                default:
+                    return '';
+            }
+        }
+
+        const fruitPositions = [
+            { row: 3, col: 4 },
+            { row: 3, col: 6 },
+            { row: 4, col: 2 },
+            { row: 4, col: 8 },
+            { row: 5, col: 1 },
+            { row: 5, col: 9 },
+            { row: 6, col: 5 }
+        ];
+
+        function buildPixelTree() {
+            const treeContainer = document.getElementById('pixelTree');
+            treeContainer.innerHTML = '';
+
+            for (let r = 0; r < treePattern.length; r++) {
+                for (let c = 0; c < treePattern[r].length; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    const val = treePattern[r][c];
+                    if (val === 0) {
+                        cell.style.background = 'transparent';
+                    } else {
+                        cell.classList.add(getTreeClass(val));
+                    }
+
+                    const fruitIndex = fruitPositions.findIndex(fp => fp.row === r && fp.col === c);
+                    if (fruitIndex !== -1) {
+                        cell.classList.add('fruit-orange');
+                        cell.dataset.fruitIndex = fruitIndex;
+                        cell.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            pluckFruit(fruitIndex);
+                        });
+                    }
+
+                    treeContainer.appendChild(cell);
+                }
+            }
+        }
+
+        // ─── FRUIT LINKS ───
+        function buildFruitLinks() {
+            const container = document.getElementById('fruitLinksContainer');
+            container.innerHTML = '';
+            const fruitEmojis = ['🍊', '🍎', '🍇', '🍉', '🍑', '🍒', '🥝'];
+            const fruitLabels = ['Gift 1', 'Gift 2', 'Gift 3', 'Gift 4', 'Gift 5', 'Gift 6', 'Gift 7'];
+
+            for (let i = 0; i < 7; i++) {
+                const a = document.createElement('a');
+                a.className = 'fruit-link-btn';
+                a.dataset.fruitIndex = i;
+                a.textContent = `${fruitEmojis[i]} ${fruitLabels[i]}`;
+                a.href = FRUIT_URLS[i] || '#';
+                a.target = '_blank';
+                a.addEventListener('click', function(e) {
+                    if (this.classList.contains('plucked')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    if (i === 2) {
+                        e.preventDefault();
+                        pluckFruit(i);
+                        return;
+                    }
+                    pluckFruit(i);
+                    setTimeout(() => {
+                        if (FRUIT_URLS[i] && FRUIT_URLS[i] !== '#') {
+                            window.open(FRUIT_URLS[i], '_blank');
+                        }
+                    }, 100);
+                });
+                container.appendChild(a);
+            }
+        }
+
+        // ─── PLUCK FRUIT ───
+        function pluckFruit(index) {
+            if (fruitsPlucked[index]) return;
+            fruitsPlucked[index] = true;
+
+            const treeCells = document.querySelectorAll('.pixel-tree .cell.fruit-orange');
+            treeCells.forEach(cell => {
+                if (parseInt(cell.dataset.fruitIndex) === index) {
+                    cell.classList.remove('fruit-orange');
+                    cell.classList.add('fruit-orange', 'plucked');
+                    cell.style.cursor = 'default';
+                }
+            });
+
+            const links = document.querySelectorAll('.fruit-link-btn');
+            links.forEach(link => {
+                if (parseInt(link.dataset.fruitIndex) === index) {
+                    link.classList.add('plucked');
+                }
+            });
+
+            const display = document.getElementById('giftDisplay');
+            display.style.display = 'block';
+            display.className = 'fruit-gift show';
+
+            if (index === 2) {
+                display.innerHTML = `
+                            <div class="letter-content">
+                                <div class="letter-title">🕊️ A Letter Found in the Tree</div>
+                                <div class="letter-body">
+                                Something used to beat inside me every night.
+                                An unspeakable feeling, surely--
+                                a slow, wide unfurling against my sternum.
+                                Tattered wings curled inwards from a lifetime of hiding,
+                                they bled a million hopeless dreams, 
+                                tasting the air between my ribs.
+                                Before you, all I had was this dull thrum,
+                                a clock ticking in a house without walls.
+                                When you came, and time frayed,
+                                I forgot about the wings and the clock and the house (or the lack of it)
+                                With the silken air unraveling so bright and beautiful around me,
+                                that tired, consistent drumming against my chest
+                                started to sound more like singing.
+
+                                I like to think we untethered, you and I,
+                                from the usual weight of things,
+                                the dusty floorboards of everyday,
+                                the greying rays of immobile dawn.
+                                From there I felt that old, gentle pull.
+                                Gravity turned soft, insistent,
+                                with this dreamlike force holding me together,
+                                my frayed threads created a fine dust in the wind.
+                                When my edges blurred, I thought
+                                it wouldn't hold. I'd dissolve, 
+                                but when I turned to face the force,
+                                it was just you, smiling.
+                                Without meaning to, I relaxed,
+                                how could I not?
+
+                                The moth in my chest escapes through the dust-gap,
+                                and warmed sunbeams filter through the cracks.
+                                Its wings flutter in the salty sea-breeze as it escapes.
+                                in their slow, deliberate unfolding, I find
+                                a strength that could only be borne from stillness.
+                                A secret held, preparing for sunnier days,
+                                a landscape of dust and dreams
+                                ready to be held by the tide, sun-warmed waves
+                                carrying it away to a brighter place.
+                                Lighter now, steady on my feet,
+                                I found my own place here,
+                                not a dagger after all, but a stunning softness.
+                                In a decrescendo so frighteningly calming,
+                                my toughened scar-skin caught light,
+                                all that pain come to bear fruit, 
+                                breathtakingly beautiful. 
+
+                                I learned that home is a breath released.
+                                I felt that home was, undoubtedly, you.
+                                </div>
+                                <div class="letter-signoff">— Always, B.</div>
+                            </div>
+                        `;
+                display.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (Object.keys(fruitsPlucked).length === 7) {
+                    display.innerHTML += `
+                                <hr class="divider" />
+                                <p style="text-align:center; font-size:18px; font-weight:700; color:#d9a066;">
+                                    🎆 ALL 7 GIFTS HARVESTED! 🎆<br />
+                                    <span style="font-size:14px; font-weight:400; color:#8f7a5f;">
+                                        You solved the case. You saved the island. You saved my heart.<br />
+                                        <strong>Happy Anniversary, Detective. 🖤</strong>
+                                    </span>
+                                </p>
+                            `;
+                }
+                return;
+            }
+
+            if (index === 0) {
+                display.innerHTML = `
+                            <span class="gift-emoji">🍊</span>
+                            <strong>THE ORANGE — Physical Gift</strong>
+                            <p>Check the freezer! Behind the ice cream, a bag labelled "EVIDENCE #419 — LOVE FRUIT". Inside is a real orange from our tree. Sweet, unbreakable, all yours.</p>
+                        `;
+                display.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (Object.keys(fruitsPlucked).length === 7) {
+                    display.innerHTML += `
+                                <hr class="divider" />
+                                <p style="text-align:center; font-size:18px; font-weight:700; color:#d9a066;">
+                                    🎆 ALL 7 GIFTS HARVESTED! 🎆<br />
+                                    <span style="font-size:14px; font-weight:400; color:#8f7a5f;">
+                                        You solved the case. You saved the island. You saved my heart.<br />
+                                        <strong>Happy Anniversary, Detective. 🖤</strong>
+                                    </span>
+                                </p>
+                            `;
+                }
+                return;
+            }
+
+            const fruitNames = ['', 'Playlist', 'Photo Collage', 'Coupons', 'Confession', 'Drawing'];
+            const fruitEmojis = ['', '🎵', '📸', '🎫', '💖', '🎨'];
+            const label = fruitNames[index] || 'Gift';
+            const emoji = fruitEmojis[index] || '🎁';
+            display.innerHTML = `
+                        <span class="gift-emoji">${emoji}</span>
+                        <strong>${label}</strong>
+                        <p>This gift will open in a new tab. (If it doesn't, you can click the link below.)</p>
+                        <p style="font-size:12px; color:#8f7a5f; margin-top:4px;">🔗 <a href="${FRUIT_URLS[index] || '#'}" target="_blank" style="color:#b58a6b;">Open link</a></p>
+                    `;
+            display.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            if (Object.keys(fruitsPlucked).length === 7) {
+                display.innerHTML += `
+                            <hr class="divider" />
+                            <p style="text-align:center; font-size:18px; font-weight:700; color:#d9a066;">
+                                🎆 ALL 7 GIFTS HARVESTED! 🎆<br />
+                                <span style="font-size:14px; font-weight:400; color:#8f7a5f;">
+                                    You solved the case. You saved the island. You saved my heart.<br />
+                                    <strong>Happy Anniversary, Detective. 🖤</strong>
+                                </span>
+                            </p>
+                        `;
+            }
+        }
+
+        // ─── RESET ───
+        document.getElementById('resetBtn').addEventListener('click', () => location.reload());
+
+        // ─── INIT ───
+        buildResidentList();
+        renderDialogue(0);
+        console.log('🌴 Santero Island mystery loaded. Good luck, Detective!');
+        console.log('📂 Case File: cf070623.carrd.co');
+        console.log('💌 Fruit 3 contains a special letter.');
+    </script>
+</body>
+</html>
